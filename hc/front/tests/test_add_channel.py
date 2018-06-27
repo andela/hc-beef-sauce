@@ -38,4 +38,14 @@ class AddChannelTestCase(BaseTestCase):
             self.assertContains(r, "Integration Settings", status_code=200)
 
     ### Test that the team access works
+
     ### Test that bad kinds don't work
+    def test_bad_kinds_not_working(self):
+        """ Test that bad intergration kinds are not working """
+        self.client.login(username="alice@example.com", password="password")
+        bad_kinds = ("instagram", "snapchat", "heroku", "github")
+        for kind in bad_kinds:
+            url = "/intergrations/add_%s" % kind
+            r = self.client.get(url)
+            assert r.status_code == 404
+            
