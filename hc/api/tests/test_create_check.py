@@ -10,13 +10,26 @@ class CreateCheckTestCase(BaseTestCase):
     def setUp(self):
         super(CreateCheckTestCase, self).setUp()
 
-    def post(self, data, expected_error=None):
-        r = self.client.post(self.URL, json.dumps(data),
-                             content_type="application/json")
+    def post(self, data, expected_error=None, HTTP_X_API_KEY=""):
+        if HTTP_X_API_KEY != "":
+            r = self.client.post(self.URL, json.dumps(data),
+                                content_type="application/json",
+                                HTTP_X_API_KEY=HTTP_X_API_KEY)
+        else:
+            r = self.client.post(self.URL, json.dumps(data),
+                                content_type="application/json")
 
         if expected_error:
+            doc = r.json()
             self.assertEqual(r.status_code, 400)
             ### Assert that the expected error is the response error
+            error_msgs = [
+                "timeout is not a number",
+                "name is not a string",
+                "wrong api_key",
+                "timeout is too small",
+                "timeout is too large"]
+            self.assertIn(doc["error"], error_msgs)
 
         return r
 
@@ -37,6 +50,9 @@ class CreateCheckTestCase(BaseTestCase):
         self.assertEqual(doc["tags"], "bar,baz")
 
         ### Assert the expected last_ping and n_pings values
+        assert "last_ping" in doc
+        self.assertFalse(doc["last_ping"])
+        self.assertEqual(doc["n_pings"], 0)
 
         self.assertEqual(Check.objects.count(), 1)
         check = Check.objects.get()
@@ -46,24 +62,30 @@ class CreateCheckTestCase(BaseTestCase):
         self.assertEqual(check.grace.total_seconds(), 60)
 
     def test_it_accepts_api_key_in_header(self):
-        payload = json.dumps({"name": "Foo"})
+        # payload = json.dumps({"name": "Foo"})
+        payload = {"name": "Foo"}
 
         ### Make the post request and get the response
-        r = {'status_code': 201} ### This is just a placeholder variable
-
-        self.assertEqual(r['status_code'], 201)
+        # r = {'status_code': 201} ### This is just a placeholder variable
+        r = self.post(payload, None, "abc")
+        self.assertEqual(r.status_code, 201)
+        self.assertIn(b"Foo", r.content)
 
     def test_it_handles_missing_request_body(self):
         ### Make the post request with a missing body and get the response
-        r = {'status_code': 400, 'error': "wrong api_key"} ### This is just a placeholder variable
-        self.assertEqual(r['status_code'], 400)
-        self.assertEqual(r["error"], "wrong api_key")
+        # r = {'status_code': 400, 'error': "wrong api_key"} ### This is just a placeholder variable
+        r = self.post({})
+
+        self.assertEqual(r.status_code, 400)
+        self.assertIn(b"wrong api_key", r.content)
 
     def test_it_handles_invalid_json(self):
         ### Make the post request with invalid json data type
-        r = {'status_code': 400, 'error': "could not parse request body"} ### This is just a placeholder variable
-        self.assertEqual(r['status_code'], 400)
-        self.assertEqual(r["error"], "could not parse request body")
+        # r = {'status_code': 400, 'error': "could not parse request body"} ### This is just a placeholder variable
+        payload = {'api_key': "abc", "name": 'Foo'}
+        r = self.post(payload)
+        self.assertEqual(r.status_code, 400)
+        self.assertEqual(b"could not parse request body", r.content)
 
     def test_it_rejects_wrong_api_key(self):
         self.post({"api_key": "wrong"},
@@ -78,4 +100,26 @@ class CreateCheckTestCase(BaseTestCase):
                   expected_error="name is not a string")
 
     ### Test for the assignment of channels
+    def test_it_assigns_channels(self):
+        r = self.post({
+            "api_key": "abc",
+            "name": "Foo",
+            "tags": "bar,baz",
+            "timeout": 3600,
+            "grace": 60,
+            "channels": "slack"
+        })
+        self.assertEqual(r.status_code, 201)
+        print(Channel.objects.filter(kind="slack"))
+        # self.assertIn(b"kind", Channel.objects.filter(kind="slack"))
+        
+
     ### Test for the 'timeout is too small' and 'timeout is too large' errors
+    def test_it_rejects_timeout_too_small(self):
+        self.post({"api_key": "abc", "name": False, "timeout":10},
+                  expected_error="timeout is too small")
+    
+    def test_it_rejects_timeout_too_large(self):
+        self.post({"api_key": "abc", "name": False, "timeout":100000},
+                  expected_error="timeout is too large")
+
