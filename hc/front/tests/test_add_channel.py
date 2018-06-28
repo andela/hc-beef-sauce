@@ -39,9 +39,12 @@ class AddChannelTestCase(BaseTestCase):
 
     ### Test that the team access works
     def test_team_access_for_channel(self):
+        #login with alice and create a channel
         self.client.login(username="alice@example.org", password="password")
         add_channel = Channel(user=self.alice, kind="slack")
         add_channel.save()
+         
+        #login with bob to see if he can delete the same channel alice created
         self.client.login(username="bob@example.org", password="password")
         url = "/integrations/%s/remove/" % add_channel.code
         r = self.client.post(url)

@@ -40,18 +40,18 @@ class AddPushoverTestCase(BaseTestCase):
     ### Test that pushover validates priority
     def test_pushover_validates_priority(self):
         """Test if pushover validates priority"""
+        #login with alice and provide a nonce variable in session
         self.client.login(username="alice@example.org", password="password")
         session = self.client.session
         session["po_nonce"] = "n"
         session.save()
+        
         #test with bad request on priority
         params = "pushover_user_key=a&nonce=n&prio=5"
         bad_request = self.client.get("/integrations/add_pushover/?%s" % params)
         assert bad_request.status_code == 400
+        
         #test with good request
         params2 = "pushover_user_key=a&nonce=n&prio=1"
         good_request = self.client.get("/integrations/add_pushover/?%s" % params2)
-        assert good_request.status_code == 302
-
-
-        
+        assert good_request.status_code == 302      

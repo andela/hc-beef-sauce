@@ -18,6 +18,7 @@ class AddCheckTestCase(BaseTestCase):
         self.client.login(username="alice@example.org", password="password")
         add_check = Check(user=self.alice)
         add_check.save()
+        
         #check if bob can access logs for the created check
         url = "/checks/%s/log/" % add_check.code
         self.client.login(username="bob@example.org", password="password")
