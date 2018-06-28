@@ -43,7 +43,7 @@ class AddChannelTestCase(BaseTestCase):
         self.client.login(username="alice@example.org", password="password")
         add_channel = Channel(user=self.alice, kind="slack")
         add_channel.save()
-         
+
         #login with bob to see if he can delete the same channel alice created
         self.client.login(username="bob@example.org", password="password")
         url = "/integrations/%s/remove/" % add_channel.code
