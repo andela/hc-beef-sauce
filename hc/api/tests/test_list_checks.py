@@ -46,19 +46,19 @@ class ListChecksTestCase(BaseTestCase):
         ### Alice 1 tests
         self.assertEqual(checks["Alice 1"]["timeout"], 3600)
         self.assertEqual(checks["Alice 1"]["grace"], 900)
-        self.assertIn("/ping/", checks["Alice 1"]["ping_url"])
+        self.assertIn(f"/ping/{self.a1.code}", checks["Alice 1"]["ping_url"])
         self.assertEqual(checks["Alice 1"]["status"], "new")
         self.assertEqual(checks["Alice 1"]["last_ping"], self.now.isoformat())
         self.assertEqual(checks["Alice 1"]["n_pings"], 1)
-        self.assertIn("/pause", checks["Alice 1"]["pause_url"])
+        self.assertIn(f"{self.a1.code}/pause", checks["Alice 1"]["pause_url"])
         ### Alice 2 tests
         self.assertEqual(checks["Alice 2"]["timeout"], 86400)
         self.assertEqual(checks["Alice 2"]["grace"], 3600)
-        self.assertIn("/ping/", checks["Alice 2"]["ping_url"])
+        self.assertIn(f"/ping/{self.a2.code}", checks["Alice 2"]["ping_url"])
         self.assertEqual(checks["Alice 2"]["status"], "up")
         self.assertEqual(checks["Alice 2"]["last_ping"], self.now.isoformat())
         self.assertEqual(checks["Alice 2"]["n_pings"], 0)
-        self.assertIn("/pause", checks["Alice 2"]["pause_url"])
+        self.assertIn(f"{self.a2.code}/pause", checks["Alice 2"]["pause_url"])
         
     def test_it_shows_only_users_checks(self):
         bobs_check = Check(user=self.bob, name="Bob 1")
