@@ -113,7 +113,6 @@ class CreateCheckTestCase(BaseTestCase):
         print(Channel.objects.filter(kind="slack"))
         # self.assertIn(b"kind", Channel.objects.filter(kind="slack"))
         
-
     ### Test for the 'timeout is too small' and 'timeout is too large' errors
     def test_it_rejects_timeout_too_small(self):
         self.post({"api_key": "abc", "name": False, "timeout":10},
