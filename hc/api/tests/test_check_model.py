@@ -25,9 +25,8 @@ class CheckModelTestCase(TestCase):
 
         self.assertTrue(check.in_grace_period())
         self.assertEqual(check.get_status(), "up")
-
         ### The above 2 asserts fail. Make them pass
-
+        # The above asserts pass
 
     def test_paused_check_is_not_in_grace_period(self):
         check = Check()
