@@ -224,7 +224,7 @@ class NotifyTestCase(BaseTestCase):
 
 	@patch("hc.api.transports.requests.request")
 	def test_web_hooks_handles_errors(self, mock_hook):
-		"""Test that the web hooks handle connection errors and error 500s"""
+		"""Test that the web hooks handle error 500s"""
 		self._setup_data("webhook", "http://test_url")
 		mock_hook.return_value.status_code = 500
 
@@ -232,4 +232,13 @@ class NotifyTestCase(BaseTestCase):
 
 		n = Notification.objects.get()
 		self.assertEqual(n.error, "Received status code 500")
+
+	@patch("hc.api.transports.requests.request", side_effect=ConnectionError)
+	def test_webhook_connection_error(self, mock_post):
+		"""Test that the web hooks handle connection errors"""
+		self._setup_data('webhook', "http://example")
+		self.channel.notify(self.check)
+		mock_post.return_value.status_code = 522
+		n = Notification.objects.get()
+		self.assertEqual(n.error, 'Connection failed')
 
