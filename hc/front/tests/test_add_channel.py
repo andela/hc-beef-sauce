@@ -37,20 +37,25 @@ class AddChannelTestCase(BaseTestCase):
             r = self.client.get(url)
             self.assertContains(r, "Integration Settings", status_code=200)
 
-    ### Test that the team access works
     def test_team_access_for_channel(self):
-        #login with alice and create a channel
+        """Test to see if team access is allowed for a channel"""
+        # Login with alice and create a channel
         self.client.login(username="alice@example.org", password="password")
         add_channel = Channel(user=self.alice, kind="slack")
         add_channel.save()
 
-        #login with bob to see if he can delete the same channel alice created
-        self.client.login(username="bob@example.org", password="password")
         url = "/integrations/%s/remove/" % add_channel.code
+
+        # Login with charlie to see if his post to delete the channel will be rejected
+        self.client.login(username="charlie@example.org", password="password")
+        r = self.client.post(url)
+        self.assertEqual(r.status_code, 403)
+
+        # Login with bob to see if he can delete the same channel alice created
+        self.client.login(username="bob@example.org", password="password")
         r = self.client.post(url)
         self.assertEqual(r.status_code, 302)
 
-    ### Test that bad kinds don't work
     def test_bad_kinds_not_working(self):
         """ Test that bad intergration kinds are not working """
         self.client.login(username="alice@example.com", password="password")
