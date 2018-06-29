@@ -9,9 +9,7 @@ class ListChecksTestCase(BaseTestCase):
 
     def setUp(self):
         super(ListChecksTestCase, self).setUp()
-
         self.now = now().replace(microsecond=0)
-
         self.a1 = Check(user=self.alice, name="Alice 1")
         self.a1.timeout = td(seconds=3600)
         self.a1.grace = td(seconds=900)
@@ -19,7 +17,6 @@ class ListChecksTestCase(BaseTestCase):
         self.a1.n_pings = 1
         self.a1.status = "new"
         self.a1.save()
-
         self.a2 = Check(user=self.alice, name="Alice 2")
         self.a2.timeout = td(seconds=86400)
         self.a2.grace = td(seconds=3600)
@@ -32,46 +29,35 @@ class ListChecksTestCase(BaseTestCase):
 
     def test_it_works(self):
         r = self.get()
-        ### Assert the response status code
         self.assertEqual(r.status_code, 200)
-
         doc = r.json()
         self.assertTrue("checks" in doc)
-
         checks = {check["name"]: check for check in doc["checks"]}
-        ### Assert the expected length of checks
         self.assertEqual(len(checks), 2)
-        ### Assert the checks Alice 1 and Alice 2's timeout, grace, ping_url, status,
-        ### last_ping, n_pings and pause_url
-        ### Alice 1 tests
-        self.assertEqual(checks["Alice 1"]["timeout"], 3600)
-        self.assertEqual(checks["Alice 1"]["grace"], 900)
-        self.assertIn(f"/ping/{self.a1.code}", checks["Alice 1"]["ping_url"])
-        self.assertEqual(checks["Alice 1"]["status"], "new")
-        self.assertEqual(checks["Alice 1"]["last_ping"], self.now.isoformat())
-        self.assertEqual(checks["Alice 1"]["n_pings"], 1)
-        self.assertIn(f"{self.a1.code}/pause", checks["Alice 1"]["pause_url"])
-        ### Alice 2 tests
-        self.assertEqual(checks["Alice 2"]["timeout"], 86400)
-        self.assertEqual(checks["Alice 2"]["grace"], 3600)
-        self.assertIn(f"/ping/{self.a2.code}", checks["Alice 2"]["ping_url"])
-        self.assertEqual(checks["Alice 2"]["status"], "up")
-        self.assertEqual(checks["Alice 2"]["last_ping"], self.now.isoformat())
-        self.assertEqual(checks["Alice 2"]["n_pings"], 0)
-        self.assertIn(f"{self.a2.code}/pause", checks["Alice 2"]["pause_url"])
+        a1 = checks["Alice 1"]
+        self.assertEqual(
+            (a1['timeout'], a1['grace'], a1['last_ping'], a1['n_pings'], a1['status']),
+            (3600, 900, self.a1.last_ping.isoformat(), self.a1.n_pings, self.a1.status)
+            )
+        a2 = checks["Alice 2"]
+        self.assertEqual(
+            (a2['timeout'], a2['grace'], a2['last_ping'], a2['status']),
+            (86400, 3600, self.a2.last_ping.isoformat(), self.a2.status)
+            )
+        self.assertIn(f"/ping/{self.a1.code}", a1["ping_url"])
+        self.assertIn(f"{self.a1.code}/pause", a1["pause_url"])
+        self.assertIn(f"/ping/{self.a2.code}", a2["ping_url"])
+        self.assertIn(f"{self.a2.code}/pause", a2["pause_url"])
         
     def test_it_shows_only_users_checks(self):
         bobs_check = Check(user=self.bob, name="Bob 1")
         bobs_check.save()
-
         r = self.get()
         data = r.json()
         self.assertEqual(len(data["checks"]), 2)
         for check in data["checks"]:
             self.assertNotEqual(check["name"], "Bob 1")
 
-    ### Test that it accepts an api_key in the request
     def test_it_accepts_api_key_in_request(self):
-
         r = self.client.get("/api/v1/checks/", HTTP_X_API_KEY="")
         self.assertTrue(r.status_code == 400)
