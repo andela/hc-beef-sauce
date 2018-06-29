@@ -91,12 +91,12 @@ def pause(request, code):
     check.status = "paused"
     check.save()
     return JsonResponse(check.to_dict())
-
+    
 
 @never_cache
 def badge(request, username, signature, tag):
     if not check_signature(username, tag, signature):
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest() 
 
     status = "up"
     q = Check.objects.filter(user__username=username, tags__contains=tag)
