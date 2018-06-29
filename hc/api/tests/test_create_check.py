@@ -133,6 +133,6 @@ class CreateCheckTestCase(BaseTestCase):
     def test_it_rejects_timeout_too_large(self):
         """Test that timeout values greater than allowed maximum(604800 secs) rejected."""
 
-        self.post({"api_key": "abc", "name": False, "timeout":100000},
+        self.post({"api_key": "abc", "name": False, "timeout":1000000},
                   expected_error="timeout is too large")
 

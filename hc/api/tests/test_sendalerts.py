@@ -35,6 +35,7 @@ class SendAlertsTestCase(BaseTestCase):
 
     @patch("hc.api.management.commands.sendalerts.Command.handle_one")
     def test_handle_many_true(self, mock):
+        """Tests handles many alerts"""
         yesterday = timezone.now() - timedelta(days=1)
         names = ["Check %d" % num for num in range(0,10000)]
         for name in names:

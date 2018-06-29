@@ -27,7 +27,8 @@ class ListChecksTestCase(BaseTestCase):
     def get(self):
         return self.client.get("/api/v1/checks/", HTTP_X_API_KEY="abc")
 
-    def test_it_works(self):
+    def test_get_checks(self):
+        """Test created checks are returned for user"""
         r = self.get()
         self.assertEqual(r.status_code, 200)
         doc = r.json()
@@ -59,5 +60,6 @@ class ListChecksTestCase(BaseTestCase):
             self.assertNotEqual(check["name"], "Bob 1")
 
     def test_it_accepts_api_key_in_request(self):
+        """Test accepts key in request"""
         r = self.client.get("/api/v1/checks/", HTTP_X_API_KEY="")
         self.assertTrue(r.status_code == 400)

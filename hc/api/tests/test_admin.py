@@ -16,8 +16,6 @@ class ApiAdminTestCase(BaseTestCase):
         """Test admin able to add new channel kind."""
 
         self.client.login(username="alice@example.org", password="password")
-
         ch = Channel(user=self.alice, kind="pushbullet", value="test-token")
         ch.save()
-
         self.assertTrue(Channel.objects.get(kind="pushbullet"))

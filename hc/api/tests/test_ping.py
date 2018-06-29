@@ -62,16 +62,19 @@ class PingTestCase(TestCase):
         assert "no-cache" in r.get("Cache-Control")
 
     def test_check_pause_status_change_after_ping(self):
+        """Tests pause status changes after a ping"""
         self.check.status = "pause"
         r = self.client.get(f"/ping/{self.check.code}/")
         self.check.refresh_from_db()
         self.assertEqual(self.check.status, "up")
 
     def test_post_to_ping_works(self):
+        """Tests that a ping to a post works"""
         r = self.client.post(f"/ping/{self.check.code}/")
         self.assertEqual(r.status_code, 200)
 
     def test_csrf_client_head_works(self):
+        """Tests csrf head works"""
         csrf_client = Client(enforce_csrf_checks=True)
         r = csrf_client.head(f"/ping/{self.check.code}/")
         self.assertEqual(r.status_code, 200)

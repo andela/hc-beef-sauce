@@ -10,6 +10,7 @@ from hc.api.models import Check
 class EnsureTriggersTestCase(TestCase):
 
     def test_ensure_triggers(self):
+        """Check after last_ping alert after is not None"""
         Command().handle()
         check = Check.objects.create()
         assert check.alert_after is None
