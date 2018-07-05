@@ -59,6 +59,18 @@ def my_checks(request):
 
     return render(request, "front/my_checks.html", ctx)
 
+@login_required
+def unresolved(request):
+    all_checks = list(Check.objects.filter(user=request.team.user).order_by("created"))
+    checks = []
+    for check in all_checks:
+        if check.get_status() == 'down':
+            checks.append(check)
+    ctx = {
+        "page": "unresolved",
+        "checks": checks
+    }
+    return render(request, "front/unresolved.html", ctx)
 
 def _welcome_check(request):
     check = None
