@@ -1,5 +1,5 @@
 from django import forms
-
+from hc.api.models import Check
 
 class LowercaseEmailField(forms.EmailField):
 
@@ -23,6 +23,7 @@ class SetPasswordForm(forms.Form):
 
 class InviteTeamMemberForm(forms.Form):
     email = LowercaseEmailField()
+    checks = forms.MultipleChoiceField()
 
 
 class RemoveTeamMemberForm(forms.Form):

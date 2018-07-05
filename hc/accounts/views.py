@@ -162,17 +162,23 @@ def profile(request):
         elif "invite_team_member" in request.POST:
             if not profile.team_access_allowed:
                 return HttpResponseForbidden()
-
             form = InviteTeamMemberForm(request.POST)
+            print(form)
+
             if form.is_valid():
+                print("form======", form)
 
                 email = form.cleaned_data["email"]
+                checks = form.cleaned_data["checks"]
+                print("----", checks)
                 try:
                     user = User.objects.get(email=email)
                 except User.DoesNotExist:
                     user = _make_user(email)
+        
+                chks = Check.objects.filter(code__in=checks)
 
-                profile.invite(user)
+                profile.invite(user, chks)
                 messages.success(request, "Invitation to %s sent!" % email)
         elif "remove_team_member" in request.POST:
             form = RemoveTeamMemberForm(request.POST)
@@ -213,6 +219,7 @@ def profile(request):
         "page": "profile",
         "badge_urls": badge_urls,
         "profile": profile,
+        "checks" : Check.objects.filter(user=request.team.user),
         "show_api_key": show_api_key
     }
 

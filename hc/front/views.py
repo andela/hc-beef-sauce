@@ -17,6 +17,7 @@ from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
                             TimeoutForm)
+from hc.accounts.models import Member
 
 
 # from itertools recipes:
@@ -361,7 +362,9 @@ def remove_channel(request, code):
 
 @login_required
 def add_email(request):
-    ctx = {"page": "channels"}
+    ctx = {
+        "page": "channels"
+    }
     return render(request, "integrations/add_email.html", ctx)
 
 
