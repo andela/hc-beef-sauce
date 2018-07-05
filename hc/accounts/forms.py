@@ -22,8 +22,18 @@ class SetPasswordForm(forms.Form):
 
 
 class InviteTeamMemberForm(forms.Form):
+    """Represents invite member form."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        
+        choices = list()
+        for check in Check.objects.filter(user=self.request.user):
+            choices.append((check.name, check.code))
+        super(InviteTeamMemberForm, self).__init__(*args, **kwargs)
+        self.fields['checks'] = forms.MultipleChoiceField(choices=choices)
+    
     email = LowercaseEmailField()
-    checks = forms.MultipleChoiceField()
 
 
 class RemoveTeamMemberForm(forms.Form):

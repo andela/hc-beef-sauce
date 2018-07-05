@@ -75,7 +75,8 @@ class Profile(models.Model):
     def invite(self, user, checks):
         member = Member(team=self, user=user)
         member.save()
-        member.checks.add(checks)
+        for check in checks:
+            member.checks.add(check.id)
 
         # Switch the invited user over to the new team so they
         # notice the new team on next visit:
@@ -83,7 +84,6 @@ class Profile(models.Model):
         user.profile.save()
 
         user.profile.send_instant_login_link(self)
-        print(checks)
 
 
 class Member(models.Model):

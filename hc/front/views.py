@@ -30,8 +30,27 @@ def pairwise(iterable):
 
 @login_required
 def my_checks(request):
-    q = Check.objects.filter(user=request.team.user).order_by("created")
-    checks = list(q)
+    """
+    Passes check details to front/my_checks.html
+
+    :param request: requst obj sent during InviteMember form submission
+    :return: render holding request obj, template and check details
+    """
+
+    q = Member.objects.filter(user=request.team.user)
+    print(q.count())
+    if q:
+        query = list()
+        for member in q:
+            q2 = member.checks.all()
+            query.append(q2)
+        q3 = Check.objects.filter(user=request.user)
+        for chk in range(len(query)):
+            if chk != len(query)-1:
+                q4 = query[chk] | query[chk+1]
+        checks = list(q4 | q3)
+    else:
+        checks = list(Check.objects.filter(user=request.user))
 
     counter = Counter()
     down_tags, grace_tags = set(), set()

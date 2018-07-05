@@ -162,21 +162,19 @@ def profile(request):
         elif "invite_team_member" in request.POST:
             if not profile.team_access_allowed:
                 return HttpResponseForbidden()
-            form = InviteTeamMemberForm(request.POST)
+            form = InviteTeamMemberForm(request.POST, request=request)
             print(form)
 
             if form.is_valid():
-                print("form======", form)
 
                 email = form.cleaned_data["email"]
                 checks = form.cleaned_data["checks"]
-                print("----", checks)
                 try:
                     user = User.objects.get(email=email)
                 except User.DoesNotExist:
                     user = _make_user(email)
         
-                chks = Check.objects.filter(code__in=checks)
+                chks = Check.objects.filter(name__in=checks)
 
                 profile.invite(user, chks)
                 messages.success(request, "Invitation to %s sent!" % email)
