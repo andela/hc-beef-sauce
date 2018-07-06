@@ -76,6 +76,14 @@
                                 <a
                                     href="#"
                                     data-email="{{ member.user.email }}"
+                                    data-toggle="modal"
+                                    data-target="#priority-edit-team-member-modal"
+                                    class="pull-right priority-edit">Priority</a>
+                            </td>
+                            <td>
+                                <a
+                                    href="#"
+                                    data-email="{{ member.user.email }}"
                                     class="pull-right member-remove">Remove</a>
                             </td>
                         </tr>
@@ -245,9 +253,40 @@
     </div>
 </div>
 
+<div id="priority-edit-team-member-modal" class="modal">
+    <div class="modal-dialog">
+        <form id="priority-edit-team-member-form" method="post">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="remove-check-title">Edit team member priority</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="item-priority">
+                        User check priority:
+                    </label>
+                    <select name="priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button
+                        type="submit"
+                        name="priority_edit_team_member"
+                        class="btn btn-success">Edit Priority</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div id="invite-team-member-modal" class="modal">
     <div class="modal-dialog">
-        <form method="post" class="form-horizontal">
+        <form method="post" class="form-horizontal" action="{% url 'hc-profile' %}">
             {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
