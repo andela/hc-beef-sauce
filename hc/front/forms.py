@@ -41,3 +41,8 @@ class AddWebhookForm(forms.Form):
 
     def get_value(self):
         return "{value_down}\n{value_up}".format(**self.cleaned_data)
+
+
+class NagUserForm(forms.Form):
+    """Form to edit nag user function"""
+    nag = forms.BooleanField(required=False)
