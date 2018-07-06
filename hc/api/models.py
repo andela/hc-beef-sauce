@@ -17,7 +17,8 @@ STATUSES = (
     ("up", "Up"),
     ("down", "Down"),
     ("new", "New"),
-    ("paused", "Paused")
+    ("paused", "Paused"),
+    ("nag", "Nag")
 )
 DEFAULT_TIMEOUT = td(days=1)
 DEFAULT_GRACE = td(hours=1)
@@ -52,6 +53,7 @@ class Check(models.Model):
     last_ping = models.DateTimeField(null=True, blank=True)
     alert_after = models.DateTimeField(null=True, blank=True, editable=False)
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
+    nag_after = models.DateTimeField(null=True, blank=True)
     nag_status = models.BooleanField(default=False)
 
     def name_then_code(self):
@@ -91,6 +93,10 @@ class Check(models.Model):
             return "up"
 
         return "down"
+
+    def nag(self):
+        if self.get_status() == 'down' and self.nag_status:
+            return "nag"
 
     def in_grace_period(self):
         if self.status in ("new", "paused"):
