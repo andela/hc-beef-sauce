@@ -75,16 +75,21 @@
         {% endif %}
         </td>
         <td>
-            {% if check.nag_status == True %}
+            {% if check.nag_after > check.alert_after and check.nag_status == True %}
                 <button
-                data-nag="{{ check.nag_status }}"
-                data-url="{% url 'hc-update-nag' check.code %}"
-                class="btn btn-info update-nag">Nag On</button>
+                    data-nag="{{ check.nag_status }}"
+                    data-url="{% url 'hc-update-nag' check.code %}"
+                    class="btn btn-danger update-nag">NAGGING!</button>
+            {% elif check.nag_status == True %}
+                <button
+                    data-nag="{{ check.nag_status }}"
+                    data-url="{% url 'hc-update-nag' check.code %}"
+                    class="btn btn-info update-nag">Nag On</button>
             {% else %}
                 <button
-                data-nag="{{ check.nag_status }}"
-                data-url="{% url 'hc-update-nag' check.code %}"
-                class="btn btn-default update-nag">Nag Off</button>
+                    data-nag="{{ check.nag_status }}"
+                    data-url="{% url 'hc-update-nag' check.code %}"
+                    class="btn btn-default update-nag">Nag Off</button>
             {% endif %}    
         </td>
         <td>
