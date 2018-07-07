@@ -37,18 +37,16 @@ def my_checks(request):
     :return: render holding request obj, template and check details
     """
 
-    q = Member.objects.filter(user=request.team.user)
-    print(q.count())
-    if q:
+    members = Member.objects.filter(user=request.team.user)
+    if members:
         query = list()
-        for member in q:
-            q2 = member.checks.all()
-            query.append(q2)
-        q3 = Check.objects.filter(user=request.user)
-        for chk in range(len(query)):
-            if chk != len(query)-1:
-                q4 = query[chk] | query[chk+1]
-        checks = list(q4 | q3)
+        for member in members:
+            member_checks = member.checks.all()
+            query.append(member_checks)
+        checks_user = Check.objects.filter(user=request.user)
+        for check in query:
+            checks_user = checks_user | check
+        checks = list(checks_user)
     else:
         checks = list(Check.objects.filter(user=request.user))
 
