@@ -18,8 +18,8 @@ class NameTagsForm(forms.Form):
 
 
 class TimeoutForm(forms.Form):
-    timeout = forms.IntegerField(min_value=60, max_value=2592000)
-    grace = forms.IntegerField(min_value=60, max_value=2592000)
+    timeout = forms.IntegerField(min_value=60, max_value=7776000)
+    grace = forms.IntegerField(min_value=60, max_value=7776000)
 
 
 class AddChannelForm(forms.ModelForm):
@@ -41,3 +41,8 @@ class AddWebhookForm(forms.Form):
 
     def get_value(self):
         return "{value_down}\n{value_up}".format(**self.cleaned_data)
+
+
+class NagUserForm(forms.Form):
+    """Form to edit nag user function"""
+    nag = forms.BooleanField(required=False)

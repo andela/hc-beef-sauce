@@ -4,6 +4,7 @@ from hc.front import views
 
 check_urls = [
     url(r'^name/$', views.update_name, name="hc-update-name"),
+    url(r'^nag_status/$', views.nag_user, name="hc-update-nag"),
     url(r'^timeout/$', views.update_timeout, name="hc-update-timeout"),
     url(r'^pause/$', views.pause, name="hc-pause"),
     url(r'^remove/$', views.remove_check, name="hc-remove-check"),
@@ -34,7 +35,7 @@ urlpatterns = [
     url(r'^checks/add/$', views.add_check, name="hc-add-check"),
     url(r'^checks/([\w-]+)/', include(check_urls)),
     url(r'^integrations/', include(channel_urls)),
-
+    url(r'^unresolved/$', views.unresolved, name="hc-unresolved"),
     url(r'^docs/$', views.docs, name="hc-docs"),
     url(r'^docs/api/$', views.docs_api, name="hc-docs-api"),
     url(r'^about/$', views.about, name="hc-about"),

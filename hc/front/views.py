@@ -77,6 +77,18 @@ def my_checks(request):
 
     return render(request, "front/my_checks.html", ctx)
 
+@login_required
+def unresolved(request):
+    all_checks = list(Check.objects.filter(user=request.team.user).order_by("created"))
+    checks = []
+    for check in all_checks:
+        if check.get_status() == 'down':
+            checks.append(check)
+    ctx = {
+        "page": "unresolved",
+        "checks": checks
+    }
+    return render(request, "front/unresolved.html", ctx)
 
 def _welcome_check(request):
     check = None
@@ -572,3 +584,21 @@ def privacy(request):
 
 def terms(request):
     return render(request, "front/terms.html", {})
+
+@login_required
+@uuid_or_400
+def nag_user(request, code):
+    """Function for updating the nag option"""
+    assert request.method == "POST"
+
+    check = get_object_or_404(Check, code=code)
+    if check.user_id != request.team.user.id:
+        return HttpResponseForbidden()
+
+    form = NagUserForm(request.POST)
+    if form.is_valid():
+        check.nag_status = form.cleaned_data["nag"]
+        check.save()
+
+    return redirect("hc-checks")
+    
