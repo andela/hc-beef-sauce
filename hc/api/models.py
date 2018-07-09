@@ -50,6 +50,7 @@ class Check(models.Model):
     grace = models.DurationField(default=DEFAULT_GRACE)
     n_pings = models.IntegerField(default=0)
     last_ping = models.DateTimeField(null=True, blank=True)
+    member_check_priority = models.CharField(max_length=12, default="medium")
     alert_after = models.DateTimeField(null=True, blank=True, editable=False)
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
 
@@ -147,6 +148,7 @@ class Channel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     kind = models.CharField(max_length=20, choices=CHANNEL_KINDS)
     value = models.TextField(blank=True)
+    # user_priority = models.CharField(max_length=9, default="medium")
     email_verified = models.BooleanField(default=False)
     checks = models.ManyToManyField(Check)
 
@@ -194,6 +196,8 @@ class Channel(models.Model):
                 break  # Success!
 
         if error != "no-op":
+
+
             n = Notification(owner=check, channel=self)
             n.check_status = check.status
             n.error = error

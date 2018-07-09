@@ -201,8 +201,8 @@ def profile(request):
             form = PriorityEditTeamMemberForm(request.POST)
             if form.is_valid():
                 priority = form.cleaned_data["priority"]
-                Member.objects.filter(user=request.user)
-
+                print(priority)
+                Check.member_check_priority = priority
 
 
     tags = set()
