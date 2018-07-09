@@ -163,7 +163,6 @@ def profile(request):
             if not profile.team_access_allowed:
                 return HttpResponseForbidden()
             form = InviteTeamMemberForm(request.POST, request=request)
-            print(form)
 
             if form.is_valid():
 
@@ -202,7 +201,6 @@ def profile(request):
                 messages.success(request, "Team Name updated!")
         elif "remove_team_member_check" in request.POST:
             form = RemoveTeamMemberCheckForm(request.POST)
-            print(form)
             if form.is_valid():
                 code = form.cleaned_data["code"]
                 email = form.cleaned_data["email"]
