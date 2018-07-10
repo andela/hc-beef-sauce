@@ -133,6 +133,10 @@ def about(request):
     return render(request, "front/about.html", {"page": "about"})
 
 
+def help_page(request):
+    """Function to render the help page"""
+    return render(request, "front/help_page.html", {"page": "help"})
+
 @login_required
 def add_check(request):
     assert request.method == "POST"

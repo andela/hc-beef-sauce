@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load compress staticfiles %}
+
+{% block title %}Help - healthchecks.io{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Help</h1>
+    </div>
+</div>
+<!-- Start Nav Pills for different help sections-->
+<div class="row">
+    <div class="container">
+        <!-- Nav Tabs Name-->
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#home">FAQs</a></li>
+          <li><a data-toggle="tab" href="#menu2">Video Tutorials</a></li>
+        </ul>
+      
+        <div class="tab-content">
+            <!-- FAQ Tab -->
+            <div id="home" class="tab-pane fade in active">
+                <h3>FAQs</h3>
+                <!-- Accordion for FAQs-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo1')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue">
+                 FAQ 1
+                </button>
+                <div id="Demo1" class="w3-container w3-hide">
+                    <h4>Section 1</h4>
+                    <p>Some text..</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo2')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue">
+                FAQ 2
+                </button>
+                <div id="Demo2" class="w3-container w3-hide">
+                    <h4>Section 1</h4>
+                    <p>Some text..</p>
+                </div>
+                <!--End of FAQ-->
+            </div>
+        
+            <!-- Video Tutorials -->
+            <div id="menu2" class="tab-pane fade">
+                <h3>Video Tutorials</h3>
+                <!-- Accordion for FAQs-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo99')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue">
+                Video 1
+                </button>
+                <div id="Demo99" class="w3-container w3-hide">
+                    <h4>Section 1</h4>
+                    <p>Some text..</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo98')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue">
+                Video 2
+                </button>
+                <div id="Demo98" class="w3-container w3-hide">
+                    <h4>Section 1</h4>
+                    <p>Some text..</p>
+                </div>
+                <!--End of FAQ-->
+            </div>
+            </div>
+      </div>      
+</div>
+<!-- End Nav Pill help section -->
+{% endblock %}
+
+{% block scripts %}
+{% compress js %}
+<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/nouislider.min.js' %}"></script>
+<script src="{% static 'js/clipboard.min.js' %}"></script>
+<script src="{% static 'js/checks.js' %}"></script>
+<script src="{% static 'js/help.js' %}"></script>
+{% endcompress %}
+{% endblock %}
