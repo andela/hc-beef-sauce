@@ -30,8 +30,9 @@ class RemoveTeamMemberForm(forms.Form):
 
 
 class PriorityEditTeamMemberForm(forms.Form):
-    choices = (("low", "low"), ("medium", "medium"), ("medium", "high"))
+    choices = (("low", "low"), ("medium", "medium"), ("high", "high"))
     priority = forms.ChoiceField(choices=choices)
+    email = LowercaseEmailField()
 
 
 class TeamNameForm(forms.Form):

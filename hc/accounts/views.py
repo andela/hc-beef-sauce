@@ -132,6 +132,7 @@ def check_token(request, username, token):
 @login_required
 def profile(request):
     profile = request.user.profile
+    member = request.user.email
     # Switch user back to its default team
     if profile.current_team_id != profile.id:
         request.team = profile
@@ -198,12 +199,17 @@ def profile(request):
                 messages.success(request, "Team Name updated!")
 
         elif "priority_edit_team_member" in request.POST:
+            if not profile.team_access_allowed:
+                return HttpResponseForbidden()
+
             form = PriorityEditTeamMemberForm(request.POST)
             if form.is_valid():
-                priority = form.cleaned_data["priority"]
-                print(priority)
-                Check.member_check_priority = priority
+                team_priority = form.cleaned_data["priority"]
+                email = form.cleaned_data["email"]
+                user = User.objects.get(email=email)
+                profile.edituserpriority(profile, user, team_priority)
 
+                messages.success(request, "User priority was updated.")
 
     tags = set()
     for check in Check.objects.filter(user=request.team.user):

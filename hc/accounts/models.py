@@ -82,7 +82,14 @@ class Profile(models.Model):
 
         user.profile.send_instant_login_link(self)
 
+    def edituserpriority(self, profile, user, team_priority):
+        """Edit user priority in the channel"""
+        member = Member.objects.get(team=profile, user=user)
+        member.team_priority = team_priority
+        member.save()
+
 
 class Member(models.Model):
     team = models.ForeignKey(Profile)
     user = models.ForeignKey(User)
+    team_priority = models.CharField(max_length=12, default="medium")

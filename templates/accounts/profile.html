@@ -72,13 +72,13 @@
                         <tr>
                             <td>{{ member.user.email }} </td>
                             <td>Member</td>
+                            <td>{{ member.team_priority}}</td>
                             <td>
                                 <a
                                     href="#"
                                     data-email="{{ member.user.email }}"
                                     data-toggle="modal"
-                                    data-target="#priority-edit-team-member-modal"
-                                    class="pull-right priority-edit">Priority</a>
+                                    class="pull-right priority-edit">Edit Priority</a>
                             </td>
                             <td>
                                 <a
@@ -86,6 +86,7 @@
                                     data-email="{{ member.user.email }}"
                                     class="pull-right member-remove">Remove</a>
                             </td>
+
                         </tr>
                         {% endfor %}
                     </table>
@@ -271,6 +272,13 @@
                         <option value="medium">Medium</option>
                         <option value="high">High</option>
                     </select>
+                    <input
+                            type="hidden"
+                            name="email"
+                            id="edit-priority-user"
+                    />
+
+                    <center><p>You are about to change <span id="user-email"></span> priority?</p></center>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
