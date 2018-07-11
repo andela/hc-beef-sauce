@@ -61,7 +61,14 @@ class Email(Transport):
 
 
 class Sms(Transport):
+    """Represents SMS transport objects."""
     def notify(self, check):
+        """
+        Packages affected checks for sending.
+        
+        param check: check query object
+        """
+
         show_upgrade_note = False
         if settings.USE_PAYMENTS and check.status == "up":
             if not check.user.profile.team_access_allowed:
