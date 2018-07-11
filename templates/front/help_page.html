@@ -15,22 +15,21 @@
     <div class="container">
         <!-- Nav Tabs Name-->
         <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#home">FAQs</a></li>
-          <li><a data-toggle="tab" href="#menu2">Video Tutorials</a></li>
+          <li class="active"><a data-toggle="tab" href="#home">Video Tutorials</a></li>
+          <li><a data-toggle="tab" href="#menu2">FAQs</a></li>
         </ul>
       
         <div class="tab-content">
             <!-- FAQ Tab -->
             <div id="home" class="tab-pane fade in active">
-                <h3>FAQs</h3>
+                <h3>Video Tutorials</h3>
                 <!-- Accordion for FAQs-->
                 <!--FAQ-->
                 <button onclick="myFunction('Demo1')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue">
                  FAQ 1
                 </button>
                 <div id="Demo1" class="w3-container w3-hide">
-                    <h4>Section 1</h4>
-                    <p>Some text..</p>
+                    <p class='w3-padding-16'>Some text..</p>
                 </div>
                 <!--End of FAQ-->
                 <!--FAQ-->
@@ -38,32 +37,64 @@
                 FAQ 2
                 </button>
                 <div id="Demo2" class="w3-container w3-hide">
-                    <h4>Section 1</h4>
-                    <p>Some text..</p>
+                    <p class='w3-padding-16'>Some text..</p>
                 </div>
                 <!--End of FAQ-->
             </div>
         
             <!-- Video Tutorials -->
             <div id="menu2" class="tab-pane fade">
-                <h3>Video Tutorials</h3>
+                <h3>FAQs</h3>
                 <!-- Accordion for FAQs-->
                 <!--FAQ-->
-                <button onclick="myFunction('Demo99')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue">
-                Video 1
+                <button onclick="myFunction('Demo99')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                What is a check?
                 </button>
-                <div id="Demo99" class="w3-container w3-hide">
-                    <h4>Section 1</h4>
-                    <p>Some text..</p>
+                <div id="Demo99" class="w3-container w3-hide ">
+                    <p class='w3-padding-16'>A check is a ping that is sent from your system to health checks  showing that a particular process has been run  to the end.
+                    <br>The link for the ping is placed within the source code of your application and should run within the specific time allocated (Timeout + Grace Period), otherwise health checks assumes it has gone down and will notify you of such.</p>
                 </div>
                 <!--End of FAQ-->
                 <!--FAQ-->
-                <button onclick="myFunction('Demo98')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue">
-                Video 2
+                <button onclick="myFunction('Demo98')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        What is an integration?
                 </button>
                 <div id="Demo98" class="w3-container w3-hide">
-                    <h4>Section 1</h4>
-                    <p>Some text..</p>
+                    <p class='w3-padding-16'>An integration is a communication platform which health checks will use to communicate any information concerning you checks.
+                    <br>There are many integrations like slack, email, hip chat and others. We are continuously working to bring new integrations to create more options for you.</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo97')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        How does the Nag feature work?
+                </button>
+                <div id="Demo97" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>Once the nag feature is turned on it sends messages periodically until the user pings the specific check or they pause the monitoring of that check.
+                    <br>The time between each of the nagging messages is the the sum of the timeout and grace periods for that check.</p>
+                </div>
+                <!--End of FAQ-->
+            <!--FAQ-->
+                <button onclick="myFunction('Demo96')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        How do I resolve a check?
+                </button>
+                <div id="Demo96" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>When a check goes down there are two ways to resolve it. The first is to ping the link for that check either through your system or manually. The second way is to pause the monitoring of that check and when it goes back up, the system will receive a ping and continue monitoring as usual.</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo95')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        How do I invite team members?
+                </button>
+                <div id="Demo95" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>To invite team members, a user has to have a paid membership for health checks. The user can then go to account preferences and invite team members. They have to assign the team members checks that they can have access to, they can remove any of these users from the team at any time.</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo94')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        Is there a free version of this?
+                </button>
+                <div id="Demo94" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>Healthchecks is free and open source, to contribute please visit <a href='https://github.com/healthchecks/healthchecks'>this link</a></p>
                 </div>
                 <!--End of FAQ-->
             </div>

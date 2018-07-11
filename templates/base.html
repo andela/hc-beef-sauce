@@ -86,10 +86,6 @@
                         <a href="{% url 'hc-unresolved' %}">Unresolved</a>
                     </li>
 
-                    <li {% if page == 'help' %} class="active" {% endif %}>
-                        <a href="{% url 'hc-help' %}">Help</a>
-                    </li>
-
                 {% endif %}
 
 
@@ -106,6 +102,11 @@
                 <li {% if page == 'about' %} class="active" {% endif %}>
                     <a href="{% url 'hc-about' %}">About</a>
                 </li>
+
+                <li {% if page == 'help' %} class="active" {% endif %}>
+                    <a href="{% url 'hc-help' %}">Help</a>
+                </li>
+
             </ul>
 
 
