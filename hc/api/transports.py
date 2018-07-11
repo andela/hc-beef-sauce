@@ -73,8 +73,7 @@ class Sms(Transport):
             "now": timezone.now(),
             "show_upgrade_note": show_upgrade_note
         }
-        print(ctx)
-        sms.alert(self.channel.value, ctx)
+        sms.send(self.channel.value, ctx)
 
 
 class HttpTransport(Transport):
