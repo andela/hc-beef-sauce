@@ -1,5 +1,8 @@
 # healthchecks
 
+[![CircleCI](https://circleci.com/gh/andela/hc-beef-sauce/tree/ch-set-up-CircleCI-158937943.svg?style=svg)](https://circleci.com/gh/andela/hc-beef-sauce/tree/ch-set-up-CircleCI-158937943)
+[![Coverage Status](https://coveralls.io/repos/github/andela/hc-beef-sauce/badge.svg?branch=ch-set-up-CircleCI-158937943)](https://coveralls.io/github/andela/hc-beef-sauce?branch=ch-set-up-CircleCI-158937943)
+
 ![Screenshot of Welcome page](/stuff/screenshots/welcome.png?raw=true "Welcome Page")
 
 ![Screenshot of My Checks page](/stuff/screenshots/my_checks.png?raw=true "My Checks Page")
