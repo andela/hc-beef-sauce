@@ -101,6 +101,9 @@
                 <li {% if page == 'about' %} class="active" {% endif %}>
                     <a href="{% url 'hc-about' %}">About</a>
                 </li>
+                <li {% if page == 'article_list' %} class="active" {% endif %}>
+                    <a href="{% url 'articles:list' %}">Blog</a>
+                </li>
             </ul>
 
 
@@ -126,6 +129,10 @@
                         {% endif %}
 
                         <li><a href="{% url 'hc-profile' %}">Account Settings</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{% url 'articles:create'%}">Create Post</a>
+                        </li>
                         <li role="separator" class="divider"></li>
 
                         {% for team in request.teams %}
