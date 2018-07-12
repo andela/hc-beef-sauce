@@ -4,7 +4,8 @@ $(function () {
     var HOUR = {name: "hour", nsecs: MINUTE.nsecs * 60};
     var DAY = {name: "day", nsecs: HOUR.nsecs * 24};
     var WEEK = {name: "week", nsecs: DAY.nsecs * 7};
-    var UNITS = [WEEK, DAY, HOUR, MINUTE];
+    var MONTH = {name: "month", nsecs: (WEEK.nsecs *4) + (DAY.nsecs * 2)};
+    var UNITS = [MONTH, WEEK, DAY, HOUR, MINUTE];
 
     var secsToText = function(total) {
         var remainingSeconds = Math.floor(total);
@@ -36,14 +37,16 @@ $(function () {
         connect: "lower",
         range: {
             'min': [60, 60],
-            '33%': [3600, 3600],
-            '66%': [86400, 86400],
-            '83%': [604800, 604800],
-            'max': 2592000,
+            '25%': [3600, 3600],
+            '50%': [86400, 86400],
+            '60%': [604800, 604800],
+            '73%': [2592000, 2592000],
+            '85%': [5184000, 5184000],
+            'max': 7776000,
         },
         pips: {
             mode: 'values',
-            values: [60, 1800, 3600, 43200, 86400, 604800, 2592000],
+            values: [60, 1800, 3600, 43200, 86400, 604800, 2592000, 5184000, 7776000],
             density: 4,
             format: {
                 to: secsToText,
@@ -65,14 +68,16 @@ $(function () {
         connect: "lower",
         range: {
             'min': [60, 60],
-            '33%': [3600, 3600],
-            '66%': [86400, 86400],
-            '83%': [604800, 604800],
-            'max': 2592000,
+            '25%': [3600, 3600],
+            '50%': [86400, 86400],
+            '60%': [604800, 604800],
+            '73%': [2592000, 2592000],
+            '85%': [5184000, 5184000],
+            'max': 7776000,
         },
         pips: {
             mode: 'values',
-            values: [60, 1800, 3600, 43200, 86400, 604800, 2592000],
+            values: [60, 1800, 3600, 43200, 86400, 604800, 2592000, 5184000, 7776000],
             density: 4,
             format: {
                 to: secsToText,
@@ -198,5 +203,15 @@ $(function () {
         prompt("Press Ctrl+C to select:", text)
     });
 
+    $(".update-nag").click(function() {
+        var $this = $(this);
+
+        $("#update-nag-form").attr("action", $this.data("url"));
+        $("#update-nag-input").val($this.data("nag"));
+        $('#update-nag-modal').modal("show");
+        $("#update-nag-input").focus();
+
+        return false;
+    });
 
 });
