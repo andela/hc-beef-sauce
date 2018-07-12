@@ -42,3 +42,10 @@ def create_post(request):
 	else:
 		form = forms.CreateBlog()
 	return render(request, 'blog/create_post.html', {'form': form})
+
+@login_required()
+def edit_post(request, primary_key):
+	post = get_object_or_404(Article, pk=primary_key)
+
+	# if request.method == 'POST':
+	# 	form = PostForm
