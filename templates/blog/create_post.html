@@ -7,7 +7,10 @@
         {% csrf_token %}
 
         <div class="from-group">
-            {{ form }}
+            {% for field in form %}
+                <label >{{ field.label_tag }}</label>
+                {{ field }}
+            {% endfor %}
             <input type="submit" value="Create">
         </div>
     </form>

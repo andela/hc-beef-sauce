@@ -8,3 +8,25 @@ class CreateBlog(forms.ModelForm):
 	class Meta:
 		model = Article
 		fields = ['title', 'body', 'category', 'status']
+		widgets = {
+			'title': forms.TextInput(
+				attrs={
+					'class': 'form-control'
+				}
+			),
+			'body': forms.Textarea(
+				attrs={
+					'class': 'form-control'
+				}
+			),
+			'category': forms.Select(
+				attrs={
+					'class': 'form-control'
+				}
+			),
+			'status': forms.Select(
+				attrs={
+					'class': 'form-control'
+				}
+			)
+		}

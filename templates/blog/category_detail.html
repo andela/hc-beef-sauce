@@ -6,10 +6,12 @@
     <hr>
     {% for item in article %}
         {% if item.status == "Published" %}
-            <h2>{{ item.title }}</h2>
+            <h2>
+                <a href="{% url 'articles:detail' slug=item.slug %}">{{ item.title | title }}</a>
+            </h2>
             <p>{{ item.body | truncatechars:50 }}</p>
             <p>Author: {{ item.author }}</p>
-            <p>Published: {{ article.updated }}</p>
+            <p>Published: {{ item.updated }}</p>
         {% endif %}
     {% endfor %}
 {% endblock %}
