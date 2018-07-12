@@ -92,4 +92,4 @@ class Profile(models.Model):
 class Member(models.Model):
     team = models.ForeignKey(Profile)
     user = models.ForeignKey(User)
-    team_priority = models.CharField(max_length=12, default="medium")
+    team_priority = models.BooleanField(max_length=12, default="False")

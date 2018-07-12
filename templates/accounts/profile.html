@@ -72,7 +72,7 @@
                         <tr>
                             <td>{{ member.user.email }} </td>
                             <td>Member</td>
-                            <td>{{ member.team_priority}}</td>
+                            <td>{% if member.team_priority %} High {% else %} Low {% endif %} </td>
                             <td>
                                 <a
                                     href="#"
@@ -268,9 +268,8 @@
                         User check priority:
                     </label>
                     <select name="priority">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
+                        <option value="False">Low</option>
+                        <option value="True">High</option>
                     </select>
                     <input
                             type="hidden"
