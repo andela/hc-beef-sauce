@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Blog - {{ article.title }}{% endblock %}
+
+{% block content %}
+    {% if article.status == "Published" %}
+        <article>
+            <h2>{{ article.title }}</h2>
+            <p>{{ article.body }}</p>
+            <p>Author: {{ article.author }}</p>
+            <p>Category:
+                <a href="{% url 'articles:category_detail' slug=article.category.slug %}">{{ article.category }}</a>
+            </p>
+            <p>Published: {{ article.updated }}</p>
+        </article>
+    {% endif %}
+{% endblock %}

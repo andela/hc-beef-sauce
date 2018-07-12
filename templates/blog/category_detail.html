@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+    <h1>{{ category.title }}</h1>
+    <hr>
+    {% for item in article %}
+        {% if item.status == "Published" %}
+            <h2>{{ item.title }}</h2>
+            <p>{{ item.body | truncatechars:50 }}</p>
+            <p>Author: {{ item.author }}</p>
+            <p>Published: {{ article.updated }}</p>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
