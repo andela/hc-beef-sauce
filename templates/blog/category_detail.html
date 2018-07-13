@@ -4,14 +4,19 @@
 {% block content %}
     <h1>{{ category.title }}</h1>
     <hr>
-    {% for item in article %}
-        {% if item.status == "Published" %}
-            <h2>
-                <a href="{% url 'articles:detail' slug=item.slug %}">{{ item.title | title }}</a>
-            </h2>
-            <p>{{ item.body | truncatechars:50 }}</p>
-            <p>Author: {{ item.author }}</p>
-            <p>Published: {{ item.updated }}</p>
-        {% endif %}
-    {% endfor %}
+    <div id="blog-article">
+        {% for item in article %}
+            {% if item.status == "Published" %}
+                <h2>
+                    <a href="{% url 'articles:detail' slug=item.slug %}">{{ item.title | title }}</a>
+                </h2>
+                <p>{{ item.body | truncatewords:50 }}</p>
+                <div class="article-footer">
+                    <span>By: {{ item.author }}</span>
+                    <span>Published: {{ item.updated }}</span>
+                </div>
+                <hr>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}

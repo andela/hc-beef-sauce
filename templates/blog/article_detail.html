@@ -2,19 +2,23 @@
 {% block title %}Blog - {{ article.title }}{% endblock %}
 
 {% block content %}
-    {% if article.status == "Published" %}
-        <article>
-            <h2>{{ article.title }}</h2>
-            <p>{{ article.body }}</p>
-            <p>Author: {{ article.author }}</p>
-            <p>Category:
+    {% if article.status == "Published"%}
+        <article id="blog-article">
+            <h2>{{ article.title | title }}</h2>
+            <p>{{ article.body | linebreaks }}</p>
+            <div class="article-footer">
+                <span>By: {{ article.author }}</span>
+                <span>in
                 <a href="{% url 'articles:category_detail' slug=article.category.slug %}">{{ article.category }}</a>
-            </p>
-            <p>Published: {{ article.updated }}</p>
+                      </span>
+                <span>| Published: {{ article.updated }}</span>
+            </div>
+            <br>
             <div>
                 <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
                 <script type="IN/Share" href="{% url 'articles:detail' slug=article.slug %}"></script>
+            </div>
         </article>
     {% endif %}
 {% endblock %}
