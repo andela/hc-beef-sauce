@@ -1,22 +1,79 @@
 {% extends "base.html" %}
 {% block title %}Blog{% endblock %}
 {% block content %}
-    <h1>Articles</h1>
-    <div class="articles">
-        {% for article in articles %}
-            {% if article.status == "Published" %}
-                <div class="article">
-                    <h2>
-                        <a href="{% url 'articles:detail' slug=article.slug %}">{{ article.title | title }}</a>
-                    </h2>
-                    <p>{{ article.snippet }}</p>
-                    <p>Author: {{ article.author }}</p>
-                    <p>Category:
-                        <a href="{% url 'articles:category_detail' slug=article.category.slug %}">{{ article.category }}</a>
-                    </p>
-                    <p>Published: {{ article.updated }}</p>
-                </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div id="hc-tags">
+                <span class="label label-default">Tags</span>
+                {% for tag in all_tags %}
+                    <a  href="{% url 'articles:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div id="blog-article" class="col-md-8">
+            {% if tags %}
+                <h1>Posts Tagged With {{ tags.name | title }}</h1>
+            {% else %}
+                <h1>Articles</h1>
             {% endif %}
-        {% endfor %}
+            {% for article in articles %}
+                {% if article.status == "Published" %}
+                    <div class="article">
+                        <footer>
+                            <a href="{% url 'articles:category_detail' slug=article.category.slug %}">{{ article.category | capfirst }}</a>
+                        </footer>
+                        <h2>
+                            <a href="{% url 'articles:detail' slug=article.slug %}">{{ article.title | title }}</a>
+                        </h2>
+                        <p>{{ article.snippet }}</p>
+                        <div class="article-footer">
+                            <span>By {{ article.author }}</span>
+
+                            <span>Published: {{ article.updated }}</span>
+                            <p>
+                                Tags:
+                                {% for tag in article.tags.all %}
+                                    <a href="{% url 'articles:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                {% endif %}
+            {% endfor %}
+
+            {% if articles.has_other_pages %}
+                <ul class="pagination">
+                    {% if articles.has_previous %}
+                        <li><a href="?page={{ articles.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in articles.paginator.page_range %}
+                        {% if articles.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if articles.has_next %}
+                        <li><a href="?page={{ articles.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="col-md-2">
+            <div class="list-group">
+                <span class="label label-default">Categories</span>
+                {% for category in all_categories %}
+
+                    <a class="list-group-item" href="{% url 'articles:category_detail' slug=category.slug %}">{{ category.title | lower }}</a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}

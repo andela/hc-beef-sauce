@@ -7,7 +7,7 @@ class CreateBlog(forms.ModelForm):
 
 	class Meta:
 		model = Article
-		fields = ['title', 'body', 'category', 'status']
+		fields = ['title', 'body', 'category', 'status', 'tags']
 		widgets = {
 			'title': forms.TextInput(
 				attrs={

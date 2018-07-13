@@ -6,12 +6,15 @@
     <form action="{% url 'articles:create' %}" method="post">
         {% csrf_token %}
 
-        <div class="from-group">
-            {% for field in form %}
-                <label >{{ field.label_tag }}</label>
+
+        {% for field in form %}
+            <div class="from-group" style="margin-bottom: 30px">
+                <label>{{ field.label_tag }}</label>
                 {{ field }}
-            {% endfor %}
-            <input type="submit" value="Create">
-        </div>
+            </div>
+        {% endfor %}
+
+        <input type="submit" value="Create" class="btn btn-default">
+
     </form>
 {% endblock %}

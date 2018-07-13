@@ -2,15 +2,17 @@
 {% block title %}Blog - {{ article.title }}{% endblock %}
 
 {% block content %}
-    {% if article.status == "Published" %}
-        <article>
-            <h2>{{ article.title }}</h2>
-            <p>{{ article.body }}</p>
-            <p>Author: {{ article.author }}</p>
-            <p>Category:
+    {% if article.status == "Published"%}
+        <article id="blog-article">
+            <h2>{{ article.title | title }}</h2>
+            <p>{{ article.body | linebreaks }}</p>
+            <div class="article-footer">
+                <span>By: {{ article.author }}</span>
+                <span>in
                 <a href="{% url 'articles:category_detail' slug=article.category.slug %}">{{ article.category }}</a>
-            </p>
-            <p>Published: {{ article.updated }}</p>
+            </span>
+                <span>| Published: {{ article.updated }}</span>
+            </div>
         </article>
     {% endif %}
 {% endblock %}
