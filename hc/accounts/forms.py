@@ -1,5 +1,5 @@
 from django import forms
-
+from hc.api.models import Check
 
 class LowercaseEmailField(forms.EmailField):
 
@@ -22,6 +22,17 @@ class SetPasswordForm(forms.Form):
 
 
 class InviteTeamMemberForm(forms.Form):
+    """Represents invite member form."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        
+        choices = list()
+        for check in Check.objects.filter(user=self.request.user):
+            choices.append((check.name, check.code))
+        super(InviteTeamMemberForm, self).__init__(*args, **kwargs)
+        self.fields['checks'] = forms.MultipleChoiceField(choices=choices)
+    
     email = LowercaseEmailField()
 
 
@@ -29,5 +40,17 @@ class RemoveTeamMemberForm(forms.Form):
     email = LowercaseEmailField()
 
 
+class PriorityEditTeamMemberForm(forms.Form):
+    choices = (("True", "True"),  ("False", "False"))
+    priority = forms.ChoiceField(choices=choices)
+    email = LowercaseEmailField()
+
+
 class TeamNameForm(forms.Form):
     team_name = forms.CharField(max_length=200, required=True)
+
+class RemoveTeamMemberCheckForm(forms.Form):
+    """Represents remove team memeber check form."""
+
+    email = LowercaseEmailField()
+    code = forms.UUIDField()

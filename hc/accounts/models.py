@@ -11,13 +11,14 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from hc.lib import emails
+from hc.api.models import Check
 
 
 class Profile(models.Model):
     # Owner:
     user = models.OneToOneField(User, blank=True, null=True)
     team_name = models.CharField(max_length=200, blank=True)
-    team_access_allowed = models.BooleanField(default=False)
+    team_access_allowed = models.BooleanField(default=True)
     next_report_date = models.DateTimeField(null=True, blank=True)
     reports_allowed = models.BooleanField(default=True)
     ping_log_limit = models.IntegerField(default=100)
@@ -71,18 +72,35 @@ class Profile(models.Model):
 
         emails.report(self.user.email, ctx)
 
-    def invite(self, user):
-        member = Member(team=self, user=user)
+    def invite(self, user, checks):
+        """Invite new member or add checks to already invited member"""
+        if Member.objects.filter(user=user):
+            for check in checks:
+                Member.objects.get(user=user).checks.add(check.id)
+        else:
+
+            member = Member(team=self, user=user)
+            member.save()
+            for check in checks:
+                member.checks.add(check.id)
+
+            # Switch the invited user over to the new team so they
+            # notice the new team on next visit:
+            user.profile.current_team = self
+            user.profile.save()
+
+            user.profile.send_instant_login_link(self)
+
+    def edituserpriority(self, profile, user, team_priority):
+        """Edit user priority in the channel"""
+        member = Member.objects.get(team=profile, user=user)
+        member.team_priority = team_priority
         member.save()
-
-        # Switch the invited user over to the new team so they
-        # notice the new team on next visit:
-        user.profile.current_team = self
-        user.profile.save()
-
-        user.profile.send_instant_login_link(self)
 
 
 class Member(models.Model):
     team = models.ForeignKey(Profile)
     user = models.ForeignKey(User)
+    team_priority = models.BooleanField(max_length=12, default="False")
+    checks = models.ManyToManyField(Check)
+

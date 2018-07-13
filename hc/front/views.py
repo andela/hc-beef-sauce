@@ -16,7 +16,8 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm, NagUserForm)
+                            TimeoutForm)
+from hc.accounts.models import Member
 
 
 # from itertools recipes:
@@ -29,8 +30,25 @@ def pairwise(iterable):
 
 @login_required
 def my_checks(request):
-    q = Check.objects.filter(user=request.team.user).order_by("created")
-    checks = list(q)
+    """
+    Passes check details to front/my_checks.html
+
+    :param request: requst obj sent during InviteMember form submission
+    :return: render holding request obj, template and check details
+    """
+
+    members = Member.objects.filter(user=request.team.user)
+    if members:
+        query = list()
+        for member in members:
+            member_checks = member.checks.all()
+            query.append(member_checks)
+        checks_user = Check.objects.filter(user=request.user)
+        for check in query:
+            checks_user = checks_user | check
+        checks = list(checks_user)
+    else:
+        checks = list(Check.objects.filter(user=request.user))
 
     counter = Counter()
     down_tags, grace_tags = set(), set()
@@ -132,6 +150,10 @@ def docs_api(request):
 def about(request):
     return render(request, "front/about.html", {"page": "about"})
 
+
+def help_page(request):
+    """Function to render the help page"""
+    return render(request, "front/help_page.html", {"page": "help"})
 
 @login_required
 def add_check(request):
@@ -373,9 +395,15 @@ def remove_channel(request, code):
 
 @login_required
 def add_email(request):
-    ctx = {"page": "channels"}
+    ctx = {
+        "page": "channels"
+    }
     return render(request, "integrations/add_email.html", ctx)
 
+@login_required
+def add_sms(request):
+    ctx = {"page": "channels"}
+    return render(request, "integrations/add_sms.html", ctx)
 
 @login_required
 def add_webhook(request):
