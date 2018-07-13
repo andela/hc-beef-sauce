@@ -4,19 +4,11 @@ from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
 
 
-class PublishedManager(models.Manager):
-	def get_queryset(self):
-		return super(PublishedManager, self).get_queryset().filter(status='published')
-
-
 class Category(models.Model):
 	title = models.CharField(max_length=250)
-	slug = models.SlugField(max_length=250, unique_for_date='publish')
+	slug = models.SlugField(max_length=250)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-
-	objects = models.Manager()  # The default manager.
-	published = PublishedManager()  # The Dahl-specific manager.
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.title)
