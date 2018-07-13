@@ -6,7 +6,7 @@
             <div id="hc-tags">
                 <span class="label label-default">Tags</span>
                 {% for tag in all_tags %}
-                    <a  href="{% url 'articles:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+                    <a href="{% url 'articles:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
                     {% if not forloop.last %}, {% endif %}
                 {% endfor %}
             </div>
@@ -71,7 +71,9 @@
                 <span class="label label-default">Categories</span>
                 {% for category in all_categories %}
 
-                    <a class="list-group-item" href="{% url 'articles:category_detail' slug=category.slug %}">{{ category.title | lower }}</a>
+                    <a
+                            class="list-group-item"
+                            href="{% url 'articles:category_detail' slug=category.slug %}">{{ category.title | lower }}</a>
                 {% endfor %}
             </div>
         </div>
