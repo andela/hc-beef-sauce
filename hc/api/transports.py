@@ -5,7 +5,7 @@ import json
 import requests
 from six.moves.urllib.parse import quote
 
-from hc.lib import emails
+from hc.lib import emails, sms
 
 
 def tmpl(template_name, **ctx):
@@ -79,6 +79,29 @@ class Email(Transport):
         #     emails.alert(self.channel.value, ctx1)
         # else:
         emails.alert(self.channel.value, ctx)
+
+
+class Sms(Transport):
+    """Represents SMS transport objects."""
+    def notify(self, check):
+        """
+        Packages affected checks for sending.
+        
+        param check: check query object
+        """
+
+        show_upgrade_note = False
+        if settings.USE_PAYMENTS and check.status == "up":
+            if not check.user.profile.team_access_allowed:
+                show_upgrade_note = True
+
+        ctx = {
+            "check": check,
+            "checks": self.checks(),
+            "now": timezone.now(),
+            "show_upgrade_note": show_upgrade_note
+        }
+        sms.send(self.channel.value, ctx)
 
 
 class HttpTransport(Transport):

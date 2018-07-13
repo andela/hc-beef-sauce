@@ -11,6 +11,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from hc.lib import emails
+from hc.api.models import Check
 
 
 class Profile(models.Model):
@@ -71,16 +72,24 @@ class Profile(models.Model):
 
         emails.report(self.user.email, ctx)
 
-    def invite(self, user):
-        member = Member(team=self, user=user)
-        member.save()
+    def invite(self, user, checks):
+        """Invite new member or add checks to already invited member"""
+        if Member.objects.filter(user=user):
+            for check in checks:
+                Member.objects.get(user=user).checks.add(check.id)
+        else:
 
-        # Switch the invited user over to the new team so they
-        # notice the new team on next visit:
-        user.profile.current_team = self
-        user.profile.save()
+            member = Member(team=self, user=user)
+            member.save()
+            for check in checks:
+                member.checks.add(check.id)
 
-        user.profile.send_instant_login_link(self)
+            # Switch the invited user over to the new team so they
+            # notice the new team on next visit:
+            user.profile.current_team = self
+            user.profile.save()
+
+            user.profile.send_instant_login_link(self)
 
     def edituserpriority(self, profile, user, team_priority):
         """Edit user priority in the channel"""
@@ -93,3 +102,5 @@ class Member(models.Model):
     team = models.ForeignKey(Profile)
     user = models.ForeignKey(User)
     team_priority = models.BooleanField(max_length=12, default="False")
+    checks = models.ManyToManyField(Check)
+

@@ -13,7 +13,9 @@ from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from hc.accounts.forms import (EmailPasswordForm, InviteTeamMemberForm,
                                RemoveTeamMemberForm, ReportSettingsForm,
-                               SetPasswordForm, TeamNameForm, PriorityEditTeamMemberForm)
+                               SetPasswordForm, TeamNameForm, PriorityEditTeamMemberForm, 
+                               RemoveTeamMemberCheckForm)
+
 from hc.accounts.models import Profile, Member
 from hc.api.models import Channel, Check
 from hc.lib.badges import get_badge_url
@@ -163,17 +165,20 @@ def profile(request):
         elif "invite_team_member" in request.POST:
             if not profile.team_access_allowed:
                 return HttpResponseForbidden()
+            form = InviteTeamMemberForm(request.POST, request=request)
 
-            form = InviteTeamMemberForm(request.POST)
             if form.is_valid():
 
                 email = form.cleaned_data["email"]
+                checks = form.cleaned_data["checks"]
                 try:
                     user = User.objects.get(email=email)
                 except User.DoesNotExist:
                     user = _make_user(email)
+        
+                chks = Check.objects.filter(name__in=checks)
 
-                profile.invite(user)
+                profile.invite(user, chks)
                 messages.success(request, "Invitation to %s sent!" % email)
         elif "remove_team_member" in request.POST:
             form = RemoveTeamMemberForm(request.POST)
@@ -197,6 +202,21 @@ def profile(request):
                 profile.team_name = form.cleaned_data["team_name"]
                 profile.save()
                 messages.success(request, "Team Name updated!")
+        elif "remove_team_member_check" in request.POST:
+            form = RemoveTeamMemberCheckForm(request.POST)
+            if form.is_valid():
+                code = form.cleaned_data["code"]
+                email = form.cleaned_data["email"]
+
+                checks = Check.objects.filter(code=code)
+                members = Member.objects.filter(
+                    team=profile,
+                    checks__code=code,
+                    user=User.objects.get(email=email))
+                for member,check in zip(members, checks):
+                    member.checks.remove(check)
+                
+                messages.success(request, "%s check removed from %s" %( code, email))
 
         elif "priority_edit_team_member" in request.POST:
             if not profile.team_access_allowed:
@@ -227,6 +247,7 @@ def profile(request):
         "page": "profile",
         "badge_urls": badge_urls,
         "profile": profile,
+        "checks" : Check.objects.filter(user=request.team.user),
         "show_api_key": show_api_key
     }
 

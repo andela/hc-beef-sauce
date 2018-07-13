@@ -82,11 +82,28 @@
                             </td>
                             <td>
                                 <a
-                                    href="#"
+                                    href="/"
                                     data-email="{{ member.user.email }}"
-                                    class="pull-right member-remove">Remove</a>
+                                    class="pull-right member-remove">Remove User</a>
                             </td>
 
+                            <tbody class="assigned-checks" style="width:100%;">
+                                {% for check in member.checks.all %}
+                                <tr style="font-size:11px;">
+                                    <td style="color:#5cb85c;"> {{ check.name }} </td>
+                                    <td> {{ check.code }} </td>
+                                    <td>
+                                        <a 
+                                            href="#"
+                                            data-name="{{ check.name }}"
+                                            data-code="{{ check.code }}"
+                                            data-user="{{ member.user.email }}"
+                                            class="pull-right check-remove"
+                                            style="color: #d9534f; font-size:10px;">remove check</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>                   
                         </tr>
                         {% endfor %}
                     </table>
@@ -290,6 +307,41 @@
         </form>
     </div>
 </div>
+<div id="remove-team-member-check-modal" class="modal">
+        <div class="modal-dialog">
+            <form id="remove-team-member-check-form" method="post">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="remove-check-title">Remove Check</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            You are about to remove 
+                            <b><span id="rtm-name"></span></b> from <b><span id="rtm-user"></span></b>
+                        </p>
+                        <p>Are you sure?</p>
+                        <input
+                            type="hidden"
+                            name="email"
+                            id="remove-team-member-user" />
+                        <input
+                            type="hidden"
+                            name="code"
+                            id="remove-team-member-code" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button
+                            type="submit"
+                            name="remove_team_member_check"
+                            class="btn btn-danger">Remove Member Check</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
 <div id="invite-team-member-modal" class="modal">
     <div class="modal-dialog">
@@ -314,6 +366,16 @@
                                 id="itm-email"
                                 name="email"
                                 placeholder="friend@example.org">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <Label for="itm-checks" class="col-sm-2 control-label">Checks</Label>
+                        <div class="col-sm-9">
+                            <select multiple name="checks" id="id_checks">
+                                {% for check in checks %}
+                                <option  value="{{ check.name }}"> {{ check.name }} : {{ check.code }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </div>
