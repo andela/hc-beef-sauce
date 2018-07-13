@@ -13,7 +13,18 @@ $(function() {
 });
 
 $(function() {
+    $(".priority-edit").click(function() {
+        var $this = $(this);
 
+        $("#user-email").text($this.data("email"));
+        $("#edit-priority-user").val($this.data("email"));
+        $("#priority-edit-team-member-modal").modal("show");
+        
+        return False
+    });
+});
+
+$(function() {
     $(".check-remove").click(function() {
         var $this = $(this);
 
