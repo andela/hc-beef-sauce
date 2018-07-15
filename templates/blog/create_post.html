@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Blog - Create{% endblock %}
+
+{% block content %}
+    <h1>Create a blog</h1>
+    <form action="{% url 'articles:create' %}" method="post">
+        {% csrf_token %}
+
+
+        {% for field in form %}
+            <div class="from-group" style="margin-bottom: 30px">
+                <label>{{ field.label_tag }}</label>
+                {{ field }}
+            </div>
+        {% endfor %}
+
+        <input type="submit" value="Create" class="btn btn-default">
+
+    </form>
+{% endblock %}
