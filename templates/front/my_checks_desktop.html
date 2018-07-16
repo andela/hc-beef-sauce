@@ -27,6 +27,8 @@
                 <span class="status icon-up"></span>
             {% elif check.get_status == "down" %}
                 <span class="status icon-down"></span>
+            {% elif check.get_status == "down-ext" %}
+                <span class="status icon-down"></span>
             {% endif %}
         </td>
         <td class="name-cell">
