@@ -15,7 +15,8 @@ class MyChecksTestCase(BaseTestCase):
         for email in ("alice@example.org", "bob@example.org"):
             self.client.login(username=email, password="password")
             r = self.client.get("/checks/")
-            self.assertContains(r, "Alice Was Here", status_code=200)
+            print(r)
+            self.assertContains(r, 'My Checks', status_code=200)
 
     def test_it_shows_green_check(self):
         self.check.last_ping = timezone.now()
