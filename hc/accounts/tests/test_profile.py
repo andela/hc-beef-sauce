@@ -42,6 +42,7 @@ class ProfileTestCase(BaseTestCase):
 
         # Invite member to team
         form = {"invite_team_member": "1", "email": "frank@example.org", "checks": check.name}
+
         r = self.client.post("/accounts/profile/", form)
         assert r.status_code == 200
 
