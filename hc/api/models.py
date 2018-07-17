@@ -55,11 +55,8 @@ class Check(models.Model):
 	status = models.CharField(max_length=9, choices=STATUSES, default="new")
 	nag_after = models.DateTimeField(null=True, blank=True)
 	nag_status = models.BooleanField(default=False)
-<<<<<<< HEAD
 	alert_stay_down = models.DateTimeField(null=True, blank=True)
-=======
 	department = models.CharField(max_length=100, blank=True)
->>>>>>> 3b61b79f9d4ac14bb4aba1741514e992152db19b
 
 	def name_then_code(self):
 		if self.name:

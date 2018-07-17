@@ -17,6 +17,15 @@ class NameTagsForm(forms.Form):
 
         return " ".join(l)
 
+    def clean_department(self):
+        l = []
+
+        for part in self.cleaned_data["department"].split(" "):
+            part = part.strip()
+            if part != "":
+                l.append(part)
+
+        return " ".join(l)
 
 class TimeoutForm(forms.Form):
     timeout = forms.IntegerField(min_value=60, max_value=7776000)
