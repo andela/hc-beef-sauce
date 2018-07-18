@@ -66,6 +66,10 @@ class UpdateNameTestCase(BaseTestCase):
 
         check = Check.objects.get(id=self.check.id)
         self.assertEqual(check.tags, "foo bar baz")
+
+        r = self.client.get("/checks/")
+        self.assertContains(r, 'foo', status_code=200)
+
     
     def test_it_sanitizes_departments(self):
         """Check if departments can be added to a check."""
@@ -78,3 +82,6 @@ class UpdateNameTestCase(BaseTestCase):
 
         check = Check.objects.get(id=self.check.id)
         self.assertEqual(check.department, "foo bar baz")
+
+        r = self.client.get("/checks/")
+        self.assertContains(r, 'foo', status_code=200)
