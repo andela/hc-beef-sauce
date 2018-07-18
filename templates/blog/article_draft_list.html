@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Blog - Drafts{% endblock %}
+{% block content %}
+    <h1>Draft</h1>
+    <div class="articles">
+        {% for article in articles %}
+            {% if article.status == "Draft" %}
+                <div class="article">
+                    <h2>
+                        <a href="{% url 'articles:detail' slug=article.slug %}">{{ article.title | title }}</a>
+                    </h2>
+                    <p>{{ article.snippet }}</p>
+                    <p>Author: {{ article.author }}</p>
+                    <p>Category: {{ article.category }}</p>
+                    <p>Published: {{ article.updated }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

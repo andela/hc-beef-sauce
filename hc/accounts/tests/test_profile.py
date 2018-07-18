@@ -1,8 +1,9 @@
 from django.core import mail
+import json
 
 from hc.test import BaseTestCase
-from hc.accounts.models import Member
-from hc.api.models import Check
+from hc.accounts.models import Member, Profile
+from hc.api.models import Check, Notification
 
 
 class ProfileTestCase(BaseTestCase):
@@ -30,9 +31,18 @@ class ProfileTestCase(BaseTestCase):
         ###Assert that the email was sent and check email content
 
     def test_it_adds_team_member(self):
+        """Test if a member can be correctly added to a team along with their assigned checks"""
+
         self.client.login(username="alice@example.org", password="password")
 
-        form = {"invite_team_member": "1", "email": "frank@example.org"}
+        # Add check
+        r = self.client.post("/api/v1/checks/", json.dumps({"api_key": "abc", "name": "Foo"}), content_type="application/json")
+        self.assertEqual(r.status_code, 201)
+        check = Check.objects.filter(name="Foo").first()
+
+        # Invite member to team
+        form = {"invite_team_member": "1", "email": "frank@example.org", "checks": check.name}
+
         r = self.client.post("/accounts/profile/", form)
         assert r.status_code == 200
 
@@ -41,10 +51,11 @@ class ProfileTestCase(BaseTestCase):
             member_emails.add(member.user.email)
 
         ### Assert the existence of the member emails
-
+        self.assertNotEqual(len(member_emails), 0)
         self.assertTrue("frank@example.org" in member_emails)
 
         ###Assert that the email was sent and check email content
+        self.assertTemplateUsed(r.content)
 
     def test_add_team_member_checks_team_access_allowed_flag(self):
         self.client.login(username="charlie@example.org", password="password")

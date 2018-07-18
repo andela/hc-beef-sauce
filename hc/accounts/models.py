@@ -18,7 +18,7 @@ class Profile(models.Model):
     # Owner:
     user = models.OneToOneField(User, blank=True, null=True)
     team_name = models.CharField(max_length=200, blank=True)
-    team_access_allowed = models.BooleanField(default=False)
+    team_access_allowed = models.BooleanField(default=True)
     next_report_date = models.DateTimeField(null=True, blank=True)
     reports_allowed = models.BooleanField(default=True)
     ping_log_limit = models.IntegerField(default=100)
@@ -91,8 +91,16 @@ class Profile(models.Model):
 
             user.profile.send_instant_login_link(self)
 
+    def edituserpriority(self, profile, user, team_priority):
+        """Edit user priority in the channel"""
+        member = Member.objects.get(team=profile, user=user)
+        member.team_priority = team_priority
+        member.save()
+
 
 class Member(models.Model):
     team = models.ForeignKey(Profile)
     user = models.ForeignKey(User)
+    team_priority = models.BooleanField(max_length=12, default="False")
     checks = models.ManyToManyField(Check)
+
