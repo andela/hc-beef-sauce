@@ -148,7 +148,18 @@ $(function () {
             return;
         }
 
-        
+        function applyFilters(index, element) {
+            var tags = $(".my-checks-name", element).data("tags").split(" ");
+            for (var i=0, tag; tag=checked[i]; i++) {
+                if (tags.indexOf(tag) == -1) {
+                    $(element).hide();
+                    return;
+                }
+            }
+            
+            $(element).show();
+            }
+
         // Desktop: for each row, see if it needs to be shown or hidden
         $("#checks-table tr.checks-row").each(applyFilters);
         // Mobile: for each list item, see if it needs to be shown or hidden
