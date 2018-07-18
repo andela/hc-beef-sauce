@@ -167,6 +167,44 @@ $(function () {
 
     });
 
+    // departments display button
+    $("#my-checks-departments button").click(function() {
+        // .active has not been updated yet by bootstrap code,
+        // so cannot use it
+        $(this).toggleClass('checked');
+
+        // Make a list of currently checked tags:
+        var checked = [];
+        $("#my-checks-departments button.checked").each(function(index, el) {
+            checked.push(el.textContent);
+        });
+
+        // No checked tags: show all
+        if (checked.length == 0) {
+            $("#checks-table tr.checks-row").show();
+            $("#checks-list > li").show();
+            return;
+        }
+
+        function applyFilters(index, element) {
+            var departments = $(".my-checks-name", element).data("department").split(" ");
+            for (var i=0, department; department=checked[i]; i++) {
+                if (departments.indexOf(department) == -1) {
+                    $(element).hide();
+                    return;
+                }
+            }
+            
+            $(element).show();
+            }
+
+        // Desktop: for each row, see if it needs to be shown or hidden
+        $("#checks-table tr.checks-row").each(applyFilters);
+        // Mobile: for each list item, see if it needs to be shown or hidden
+        $("#checks-list > li").each(applyFilters);
+
+    });
+
     $(".pause-check").click(function(e) {
         var url = e.target.getAttribute("data-url");
         $("#pause-form").attr("action", url).submit();

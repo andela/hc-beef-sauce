@@ -51,7 +51,8 @@ def my_checks(request):
         checks = list(Check.objects.filter(user=request.user))
 
     counter = Counter()
-    down_tags, grace_tags = set(), set()
+    dept_counter = Counter()
+    down_tags, grace_tags, departments = set(), set(), set()
     for check in checks:
         status = check.get_status()
         for tag in check.tags_list():
@@ -65,11 +66,20 @@ def my_checks(request):
             elif check.in_grace_period():
                 grace_tags.add(tag)
 
+        for department in check.departments_list():
+            if department == "":
+                continue
+
+            dept_counter[department] += 1
+
+            departments.add(department)
+
     ctx = {
         "page": "checks",
         "checks": checks,
         "now": timezone.now(),
         "tags": counter.most_common(),
+        "departments": dept_counter.most_common(),
         "down_tags": down_tags,
         "grace_tags": grace_tags,
         "ping_endpoint": settings.PING_ENDPOINT

@@ -66,3 +66,15 @@ class UpdateNameTestCase(BaseTestCase):
 
         check = Check.objects.get(id=self.check.id)
         self.assertEqual(check.tags, "foo bar baz")
+    
+    def test_it_sanitizes_departments(self):
+        """Check if departments can be added to a check."""
+
+        url = "/checks/%s/name/" % self.check.code
+        payload = {"department": "  foo  bar\r\t \n  baz \n"}
+
+        self.client.login(username="alice@example.org", password="password")
+        self.client.post(url, data=payload)
+
+        check = Check.objects.get(id=self.check.id)
+        self.assertEqual(check.department, "foo bar baz")

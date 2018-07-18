@@ -119,6 +119,9 @@ class Check(models.Model):
 
 	def tags_list(self):
 		return [t.strip() for t in self.tags.split(" ") if t.strip()]
+	
+	def departments_list(self):
+		return [t.strip() for t in self.department.split(" ") if t.strip()]
 
 	def to_dict(self):
 		pause_rel_url = reverse("hc-api-pause", args=[self.code])
