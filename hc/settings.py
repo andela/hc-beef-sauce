@@ -93,9 +93,10 @@ DATABASES = {
 if os.environ.get("DB") == "postgres":
     DATABASES = {
         'default': {
-            'ENGINE':   'django.db.backends.postgresql',
-            'NAME':     'hc',
-            'USER':     'postgres',
+            'ENGINE':   os.environ.get("ENGINE"),
+            'NAME':     os.environ.get("NAME"),
+            'USER':    os.environ.get("USER"),
+            'PASSWORD': os.environ.get("PASSWORD"),
             'TEST': {'CHARSET': 'UTF8'}
         }
     }
