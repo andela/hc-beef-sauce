@@ -30,4 +30,4 @@ rjsmin==1.0.12
 six==1.11.0
 twilio==6.14.9
 wrapt==1.10.11
-django-taggit-0.22.2
+django-taggit==0.22.2

@@ -94,15 +94,7 @@
                             <a href="{% url 'hc-unresolved' %}">Unresolved</a>
                         </li>
                     {% endif %}
-                <li {% if page == 'about' %} class="active" {% endif %}>
-                    <a href="{% url 'hc-about' %}">About</a>
-                </li>
 
-                <li {% if page == 'help' %} class="active" {% endif %}>
-                    <a href="{% url 'hc-help' %}">Help</a>
-                </li>
-
-            </ul>
 
 
                     {% if show_pricing %}
@@ -120,6 +112,9 @@
                     </li>
                     <li {% if page == 'article_list' %} class="active" {% endif %}>
                         <a href="{% url 'articles:list' %}">Blog</a>
+                    </li>
+                    <li {% if page == 'help' %} class="active" {% endif %}>
+                        <a href="{% url 'hc-help' %}">Help</a>
                     </li>
                 </ul>
 
