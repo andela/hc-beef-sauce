@@ -1,7 +1,13 @@
 Hello,
 
 This is a notification sent by healthchecks.io.
+{% if check.status == 'often' %}
+The check "{{ check.name_then_code }}" is running too {{ check.status }}.
+
+{% else %}
 The check "{{ check.name_then_code }}" has gone {{ check.status }}.
+
+{% endif %}
 
 Here is a summary of all your checks:
 
