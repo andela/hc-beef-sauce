@@ -57,27 +57,6 @@ class Email(Transport):
             "now": timezone.now(),
             "show_upgrade_note": show_upgrade_note
         }
-
-        # ctx1 = {
-        #     "check": check,
-        #     "checks": self.checks(),
-        #     "now": timezone.now()+check.grace,
-        #     "show_upgrade_note": show_upgrade_note
-        # }
-        #
-        # ctx2 = {
-        #     "check": check,
-        #     "checks": self.checks(),
-        #     "now": timezone.now()+check.grace+check.grace,
-        #     "show_upgrade_note": show_upgrade_note
-        # }
-        # if check.member_priority_email is None:
-        #     emails.alert(self.channel.value, ctx)
-        # elif check.member_priority_email is not None and check.member_check_priority == "high":
-        #     emails.alert(self.channel.value, ctx)
-        # elif check.member_priority_email is not None and check.member_check_priority == "medium":
-        #     emails.alert(self.channel.value, ctx1)
-        # else:
         emails.alert(self.channel.value, ctx)
 
 
