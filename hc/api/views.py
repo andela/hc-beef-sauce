@@ -26,7 +26,7 @@ def ping(request, code):
     if check.status in ("new", "paused"):
         check.status = "up"
     elif check.too_often():
-        check.status = 'often'
+        check.status = "often"
         check.save()
         check.send_alert()
 
