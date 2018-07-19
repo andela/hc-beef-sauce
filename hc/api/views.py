@@ -26,7 +26,8 @@ def ping(request, code):
         if check.too_often():
             check.status = "often"
             check.send_alert()
-        check.status = "up"
+        else:
+            check.status = "up"
     check.n_pings = F("n_pings") + 1
     check.last_ping = timezone.now()
         
