@@ -20,13 +20,14 @@ STATUSES = (
 	("paused", "Paused"),
 	("nag", "Nag"),
 	("often", "Often")
+	('down-ext', "Down-ext")
 )
 DEFAULT_TIMEOUT = td(days=1)
 DEFAULT_GRACE = td(hours=1)
 CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
 				 ("hipchat", "HipChat"),
 				 ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
-				 ("victorops", "VictorOps"))
+				 ("victorops", "VictorOps"), ("sms", "SMS"))
 
 PO_PRIORITIES = {
 	-2: "lowest",
@@ -52,9 +53,10 @@ class Check(models.Model):
 	n_pings = models.IntegerField(default=0)
 	last_ping = models.DateTimeField(null=True, blank=True)
 	alert_after = models.DateTimeField(null=True, blank=True, editable=False)
-	status = models.CharField(max_length=6, choices=STATUSES, default="new")
+	status = models.CharField(max_length=9, choices=STATUSES, default="new")
 	nag_after = models.DateTimeField(null=True, blank=True)
 	nag_status = models.BooleanField(default=False)
+	alert_stay_down = models.DateTimeField(null=True, blank=True)
 
 	def name_then_code(self):
 		if self.name:
@@ -71,15 +73,16 @@ class Check(models.Model):
 	def email(self):
 		return "%s@%s" % (self.code, settings.PING_EMAIL_DOMAIN)
 
-	def send_alert(self):
-		if self.status not in ("up", "down", "often"):
+	def send_alert(self, contact=None):
+		if self.status not in ("up", "down", "down-ext", "often"):
 			raise NotImplementedError("Unexpected status: %s" % self.status)
 
 		errors = []
 		for channel in self.channel_set.all():
-			error = channel.notify(self)
-			if error not in ("", "no-op"):
-				errors.append((channel, error))
+			if channel.value == contact or contact==None:
+				error = channel.notify(self)
+				if error not in ("", "no-op"):
+					errors.append((channel, error))
 
 		return errors
 
@@ -91,8 +94,10 @@ class Check(models.Model):
 
 		if self.last_ping + self.timeout + self.grace > now:
 			return "up"
+		elif self.last_ping + self.timeout*2 + self.grace*2 > now:
+			return "down"
 
-		return "down"
+		return "down-ext"
 
 	def too_often(self):
 		"""checks wheether check runs too often"""
@@ -103,7 +108,7 @@ class Check(models.Model):
 
 	def nag(self):
 		"""checks whether user should be nagged"""
-		if self.get_status() == 'down' and self.nag_status:
+		if self.get_status() in ('down', 'down-ext') and self.nag_status:
 			return "nag"
 
 	def in_grace_period(self):
@@ -198,6 +203,8 @@ class Channel(models.Model):
 			return transports.Pushbullet(self)
 		elif self.kind == "po":
 			return transports.Pushover(self)
+		elif self.kind == "sms":
+			return transports.Sms(self)
 		else:
 			raise NotImplementedError("Unknown channel kind: %s" % self.kind)
 
@@ -274,7 +281,7 @@ class Notification(models.Model):
 		get_latest_by = "created"
 
 	owner = models.ForeignKey(Check)
-	check_status = models.CharField(max_length=6)
+	check_status = models.CharField(max_length=9)
 	channel = models.ForeignKey(Channel)
 	created = models.DateTimeField(auto_now_add=True)
 	error = models.CharField(max_length=200, blank=True)

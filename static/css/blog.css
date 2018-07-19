@@ -1,0 +1,32 @@
+#blog-article{
+    font-family: 'Merriweather', serif;
+    line-height: 1.7;
+}
+#blog-article footer{
+    font-size: 1em;
+    color: #85ac89;
+}
+#blog-article h2{
+    font-size: 3em;
+}
+
+#blog-article footer a:link, #blog-article footer a:visited{
+    color: #86b19a;
+    font-size: 0.9em;
+}
+
+#blog-article a:link, #blog-article a:visited{
+    color: #085129;
+}
+.article-footer{
+    color: #a7a7a7;
+    font-size: 0.8em;
+}
+
+article > h2 {
+    margin-bottom: 20px;
+}
+
+#hc-tags a:link, #hc-tags a:visited{
+    color: #085129;
+}
