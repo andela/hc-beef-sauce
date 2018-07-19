@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load compress staticfiles %}
+
+{% block title %}Help - healthchecks.io{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Help</h1>
+    </div>
+</div>
+<!-- Start Nav Pills for different help sections-->
+<div class="row">
+    <div class="container">
+        <!-- Nav Tabs Name-->
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#home">Video Tutorials</a></li>
+          <li><a data-toggle="tab" href="#menu2">FAQs</a></li>
+        </ul>
+      
+        <div class="tab-content">
+            <!-- FAQ Tab -->
+            <div id="home" class="tab-pane fade in active">
+                <h3>Video Tutorials</h3>
+                <!-- Accordion for FAQs-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo1')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                 How to add a check
+                </button>
+                <div id="Demo1" class="w3-container w3-hide">
+                    <iframe class='w3-padding-16' width="560" height="315" src="https://www.youtube.com/embed/-TlyaF_8PZg" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo2')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                Adding integrations
+                </button>
+                <div id="Demo2" class="w3-container w3-hide">
+                        <iframe class='w3-padding-16' width="560" height="315" src="https://www.youtube.com/embed/CtQmxTFH8x0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo3')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                How to Login/Register
+                </button>
+                <div id="Demo3" class="w3-container w3-hide">
+                        <iframe class='w3-padding-16' width="560" height="315" src="https://www.youtube.com/embed/wAoYE7gkmQI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo4')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                How to Use the Nag feature
+                </button>
+                <div id="Demo4" class="w3-container w3-hide">
+                        <iframe class='w3-padding-16' width="560" height="315" src="https://www.youtube.com/embed/zZvyG6UEWys" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo5')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                Handling Unresolved Checks
+                </button>
+                <div id="Demo5" class="w3-container w3-hide">
+                        <iframe class='w3-padding-16' width="560" height="315" src="https://www.youtube.com/embed/1WhxnL_h_as" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo6')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                Contacting our Agents
+                </button>
+                <div id="Demo6" class="w3-container w3-hide">
+                        <iframe class='w3-padding-16' width="560" height="315" src="https://www.youtube.com/embed/HR8zmZMuupc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <!--End of FAQ-->
+            </div>
+        
+            <!-- Video Tutorials -->
+            <div id="menu2" class="tab-pane fade">
+                <h3>FAQs</h3>
+                <!-- Accordion for FAQs-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo99')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                What is a check?
+                </button>
+                <div id="Demo99" class="w3-container w3-hide ">
+                    <p class='w3-padding-16'>A check is a ping that is sent from your system to health checks  showing that a particular process has been run  to the end.
+                    <br>The link for the ping is placed within the source code of your application and should run within the specific time allocated (Timeout + Grace Period), otherwise health checks assumes it has gone down and will notify you of such.</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo98')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        What is an integration?
+                </button>
+                <div id="Demo98" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>An integration is a communication platform which health checks will use to communicate any information concerning you checks.
+                    <br>There are many integrations like slack, email, hip chat and others. We are continuously working to bring new integrations to create more options for you.</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo97')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        How does the Nag feature work?
+                </button>
+                <div id="Demo97" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>Once the nag feature is turned on it sends messages periodically until the user pings the specific check or they pause the monitoring of that check.
+                    <br>The time between each of the nagging messages is the the sum of the timeout and grace periods for that check.</p>
+                </div>
+                <!--End of FAQ-->
+            <!--FAQ-->
+                <button onclick="myFunction('Demo96')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        How do I resolve a check?
+                </button>
+                <div id="Demo96" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>When a check goes down there are two ways to resolve it. The first is to ping the link for that check either through your system or manually. The second way is to pause the monitoring of that check and when it goes back up, the system will receive a ping and continue monitoring as usual.</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo95')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        How do I invite team members?
+                </button>
+                <div id="Demo95" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>To invite team members, a user has to have a paid membership for health checks. The user can then go to account preferences and invite team members. They have to assign the team members checks that they can have access to, they can remove any of these users from the team at any time.</p>
+                </div>
+                <!--End of FAQ-->
+                <!--FAQ-->
+                <button onclick="myFunction('Demo94')" class="w3-btn w3-teal w3-block w3-large w3-round-xlarge w3-left-align w3-border w3-hover-border-blue w3-margin-bottom">
+                        Is there a free version of this?
+                </button>
+                <div id="Demo94" class="w3-container w3-hide">
+                    <p class='w3-padding-16'>Healthchecks is free and open source, to contribute please visit <a href='https://github.com/healthchecks/healthchecks'>this link</a></p>
+                </div>
+                <!--End of FAQ-->
+            </div>
+            </div>
+      </div>      
+    </div>
+
+<!-- End Nav Pill help section -->
+{% endblock %}
+
+{% block scripts %}
+{% compress js %}
+<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/nouislider.min.js' %}"></script>
+<script src="{% static 'js/clipboard.min.js' %}"></script>
+<script src="{% static 'js/checks.js' %}"></script>
+<script src="{% static 'js/help.js' %}"></script>
+{% endcompress %}
+{% endblock %}
