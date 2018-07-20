@@ -58,3 +58,17 @@ class MyChecksTestCase(BaseTestCase):
 
         # Mobile
         self.assertContains(r, "label-warning")
+
+    def test_it_turns_on_nag(self):
+        """Test that it shows a button saying nag mode is on"""
+        self.check.last_ping = timezone.now() - td(days=30)
+        self.check.nag_status = True
+        self.check.status = "up"
+        self.check.save()
+
+        self.client.login(username="alice@example.org", password="password")
+        r = self.client.get("/checks/")
+
+        #Assert for both mobile and desktop
+        self.assertContains(r, "Nag On")
+        

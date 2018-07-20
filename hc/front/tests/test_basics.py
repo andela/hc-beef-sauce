@@ -20,3 +20,8 @@ class BasicsTestCase(TestCase):
         assert r.status_code == 200
         assert code != "x"
         assert Check.objects.filter(code=code).exists()
+
+    def test_user_can_access_help_page(self):
+        """Test that anyone can access the help page even they are not logged in"""
+        r = self.client.get("/help/")
+        self.assertContains(r, "Video Tutorials", status_code=200)

@@ -19,6 +19,7 @@ class ProfileTestCase(BaseTestCase):
         self.alice.profile.refresh_from_db()
         token = self.alice.profile.token
         ### Assert that the token is set
+        assert token is not None
 
         ### Assert that the email was sent and check email content
 
@@ -26,8 +27,7 @@ class ProfileTestCase(BaseTestCase):
         check = Check(name="Test Check", user=self.alice)
         check.save()
 
-        self.alice.profile.send_report()
-
+        r = self.alice.profile.send_report()
         ###Assert that the email was sent and check email content
 
     def test_it_adds_team_member(self):
