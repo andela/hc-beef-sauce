@@ -16,8 +16,8 @@
         </h1>
     </div>
     {% if tags %}
-    <div id="my-checks-tags" class="col-sm-12">
-        <Label>tags: </Label>
+    <div id="my-checks-tags" class="col-sm-12 w3-margin-bottom">
+        <Label>Tags: </Label>
         {% for tag, count in tags %}
             {% if tag in down_tags %}
                 <button class="btn btn-danger btn-xs" data-toggle="button">{{ tag }}</button>
@@ -31,8 +31,8 @@
     {% endif %}
 
     {% if departments %}
-    <div id="my-checks-departments" class="col-sm-12 w3-margin-top">
-        <Label>departments: </Label>
+    <div id="my-checks-departments" class="col-sm-12  w3-border-top w3-border-teal">
+        <Label class="w3-margin-top">Departments: </Label>
         {% for department, count in departments %}
             <button class="btn btn-default btn-sm" data-toggle="button">{{ department }}</button>
         {% endfor %}

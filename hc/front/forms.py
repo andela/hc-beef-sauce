@@ -13,8 +13,10 @@ class NameTagsForm(forms.Form):
         for part in self.cleaned_data["tags"].split(" "):
             part = part.strip()
             if part != "":
-                tag_list.append(part)
+                tag_list.append(part.lower())
 
+        # Remove duplicate entries by converting to a set then back to  a list
+        tag_list = list(set(tag_list))
         return " ".join(tag_list)
 
     def clean_department(self):
@@ -25,8 +27,9 @@ class NameTagsForm(forms.Form):
             part = part.strip()
             if part != "":
                 dept_list.append(part.lower())
-        print(dept_list)
-
+        
+        # Remove duplicate entries by converting to a set then back to  a list
+        dept_list = list(set(dept_list))
         return " ".join(dept_list)
 
 class TimeoutForm(forms.Form):
