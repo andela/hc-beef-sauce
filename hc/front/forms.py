@@ -8,24 +8,26 @@ class NameTagsForm(forms.Form):
     department = forms.CharField(max_length=500, required=False)
 
     def clean_tags(self):
-        l = []
+        tag_list = []
 
         for part in self.cleaned_data["tags"].split(" "):
             part = part.strip()
             if part != "":
-                l.append(part)
+                tag_list.append(part)
 
-        return " ".join(l)
+        return " ".join(tag_list)
 
     def clean_department(self):
-        l = []
+        """Extract list of departments from departments input field in 'update name' form"""
+        dept_list = []
 
         for part in self.cleaned_data["department"].split(" "):
             part = part.strip()
             if part != "":
-                l.append(part)
+                dept_list.append(part.lower())
+        print(dept_list)
 
-        return " ".join(l)
+        return " ".join(dept_list)
 
 class TimeoutForm(forms.Form):
     timeout = forms.IntegerField(min_value=60, max_value=7776000)
