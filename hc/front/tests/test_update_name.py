@@ -65,7 +65,7 @@ class UpdateNameTestCase(BaseTestCase):
         self.client.post(url, data=payload)
 
         check = Check.objects.get(id=self.check.id)
-        self.assertEqual(check.tags, "foo bar baz")
+        self.assertIn("baz", check.tags )
 
         r = self.client.get("/checks/")
         self.assertContains(r, 'foo', status_code=200)
@@ -81,7 +81,7 @@ class UpdateNameTestCase(BaseTestCase):
         self.client.post(url, data=payload)
 
         check = Check.objects.get(id=self.check.id)
-        self.assertEqual(check.department, "foo bar baz")
+        self.assertIn("foo", check.department)
 
         r = self.client.get("/checks/")
         self.assertContains(r, 'foo', status_code=200)
